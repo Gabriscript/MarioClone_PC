@@ -1,2 +1,2 @@
 # Mario_Clone
-Laajasalo Game project 1
+Laajasalo Game project 1. 
