@@ -6,9 +6,11 @@ public class PayerMover : MonoBehaviour {
     public float speed = 2f;
     Rigidbody2D rb;
     bool facingRight = true;
-    bool jumpImput;
+    bool grounded;
     Transform sprite;
-    
+    public GameObject fireball;
+   // enum animState { Idle, Run, Jump, Death,SmallMario,NormalMario }; TODO BIG Mario Small Mario
+
     void Awake() {
         rb = GetComponent<Rigidbody2D>();
         sprite = transform.Find("Mario_1");
@@ -16,12 +18,17 @@ public class PayerMover : MonoBehaviour {
 
 
     void Update() {
+
         UpdateFacing();
         Rush();
-        Crouch();//TODO crouching movement and sliding
-        Jump();//TODO put CD for jump -->now he´s flying
+        Crouch();//TODO crouching movement 
+        if (Input.GetKeyDown(KeyCode.Space) && grounded) {
+            Jump();
+        }
         Momentum();//TODO fix the slowing
-        
+        if (Input.GetKeyDown(KeyCode.E)) {
+            Shoot();
+        }
     }                                    //         ---alternative movement--
     void UpdateFacing() {/* float HorizotalMov = Input.GetAxis("Horizontal");rb.velocity = new Vector2(HorizotalMov * speed, rb.velocity.y); if (HorizotalMov > 0.1f) {transform.localScale = Vector3.one;  }  if ( HorizotalMov < -0.1f) {transform.localScale = new Vector3(-1,1, 1);*/
 
@@ -36,7 +43,11 @@ public class PayerMover : MonoBehaviour {
             facingRight = !facingRight;
         }
     }
+    void Shoot() {
+        var fireObject = Instantiate(fireball);
+        fireObject.transform.position = transform.position;
 
+    }
     public void Rush() {
         float HorizotalMov = Input.GetAxis("Horizontal");
        
@@ -48,10 +59,14 @@ public class PayerMover : MonoBehaviour {
 
     }
     void Jump() {
-        if (Input.GetKeyDown(KeyCode.Space)) {
+       
             rb.velocity = new Vector2(rb.velocity.x, speed);
-            jumpImput = true;
-        }
+            grounded = false;
+        
+    }
+    private void OnCollisionEnter2D(Collision2D collision) {
+        if (collision.gameObject.tag == "Ground")
+            grounded = true;
     }
 
     void Crouch() {
@@ -65,10 +80,11 @@ public class PayerMover : MonoBehaviour {
     }
      void  Momentum() {
         float HorizotalMov = Input.GetAxis("Horizontal");
-        if (Input.GetKey(KeyCode.E) && Input.GetKey(KeyCode.X)) {
+        if (Input.GetKeyDown(KeyCode.E) && Input.GetKeyDown(KeyCode.X)) {
 
             
-            rb.velocity = new Vector2(HorizotalMov * speed*0.5f, rb.velocity.y);
+            rb.velocity = new Vector3(HorizotalMov * speed*0.5f*Time.deltaTime, rb.velocity.y);
+            
         }
 
       }
