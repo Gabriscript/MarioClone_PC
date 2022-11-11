@@ -9,19 +9,21 @@ public class EnemyMovement : MonoBehaviour {
     float movementSpeed;
     Vector3 dir;
     public float dirX = -1f;
-    public Vector2 enemySize;
-    public float castDistance;
+    Vector2 enemySize;
+    Vector2 feetSize;
+    float groundCheckDepth = 0.5f;
+    public LayerMask platform;
 
     void Start() {
-        rb = this.GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
         enemySize = GetComponent<BoxCollider2D>().size;
+        feetSize = new Vector2(enemySize.x, groundCheckDepth);
     }
 
     void FixedUpdate() {
         var hits = Physics2D.BoxCastAll(transform.position, enemySize, 0, rb.velocity, rb.velocity.magnitude * Time.deltaTime);
 
-
-        if (hits.Length > 1) {
+        if (hits.Length > 2) {
             foreach (var hit in hits) {
                 if (hit.collider.gameObject != gameObject) {
                     if (hit.point.x > transform.position.x) {
@@ -34,10 +36,14 @@ public class EnemyMovement : MonoBehaviour {
             }
         }
 
-        if (hits.Length < 1) {
-            
-        }
+        var floor = Physics2D.OverlapBox(transform.position + Vector3.down * groundCheckDepth * 0.5f, feetSize, 0, platform);
 
+        if (floor == null) {
+            rb.gravityScale = 1f;
+        } else {
+            rb.gravityScale = 0f;
+            rb.velocity = Vector2.zero;
+        }
 
         if (enemyType == enemyCat.Goompa) {
             movementSpeed = 0.01f;
