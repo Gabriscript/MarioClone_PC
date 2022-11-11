@@ -2,55 +2,61 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyMovement : MonoBehaviour
-{
-    enum enemyCat {Null, Goompa, Koopa, Redkoopa, PiranhaPlant}
+public class EnemyMovement : MonoBehaviour {
+    enum enemyCat { Null, Goompa, Koopa, RedKoopa, PiranhaPlant }
     [SerializeField] enemyCat enemyType;
-    Transform enemy;
+    Rigidbody2D rb;
     float movementSpeed;
     Vector3 dir;
+    public float dirX = -1f;
+    public Vector2 enemySize;
+    public float castDistance;
 
-    void Start()
-    {
-        enemy = this.GetComponent<Transform>();
+    void Start() {
+        rb = this.GetComponent<Rigidbody2D>();
+        enemySize = GetComponent<BoxCollider2D>().size;
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
-    {
+    void FixedUpdate() {
+        var hits = Physics2D.BoxCastAll(transform.position, enemySize, 0, rb.velocity, rb.velocity.magnitude * Time.deltaTime);
+
+
+        if (hits.Length > 1) {
+            foreach (var hit in hits) {
+                if (hit.collider.gameObject != gameObject) {
+                    if (hit.point.x > transform.position.x) {
+                        dirX = -1f;
+                    }
+                    if (hit.point.x < transform.position.x) {
+                        dirX = 1f;
+                    }
+                }
+            }
+        }
+
+        if (hits.Length < 1) {
+            
+        }
+
+
         if (enemyType == enemyCat.Goompa) {
             movementSpeed = 0.01f;
-            if (Input.GetKey(KeyCode.RightArrow)) {
-                dir = Vector3.right;
-            } else {
-                dir = Vector3.left;
-            }
-            enemy.position = transform.position + movementSpeed * dir;
+            rb.velocity = new Vector2(movementSpeed * dirX, rb.velocity.y);
         }
 
         if (enemyType == enemyCat.Koopa) {
-            movementSpeed = 0.1f;
-            if (Input.GetKey(KeyCode.RightArrow)) {
-                dir = Vector3.right;
-            }
-            else {
-                dir = Vector3.left;
-            }
-            enemy.position = transform.position + movementSpeed * dir;
+            movementSpeed = 5f;
+            rb.velocity = new Vector2(movementSpeed * dirX, rb.velocity.y);
         }
 
-        //red koopa
+        if (enemyType == enemyCat.RedKoopa) {
+            movementSpeed = 5f;
+            rb.velocity = new Vector2(movementSpeed * dirX, rb.velocity.y);
+        }
 
         if (enemyType == enemyCat.PiranhaPlant) {
             movementSpeed = 0.1f;
-            if (Input.GetKey(KeyCode.RightArrow)) {
-                dir = Vector3.down;
-            }
-            else {
-                dir = Vector3.up;
-            }
-            enemy.position = transform.position + movementSpeed * dir;
+            transform.position = base.transform.position + movementSpeed * dir;
         }
-
     }
 }
