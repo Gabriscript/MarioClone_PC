@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class PayerMover : MonoBehaviour {
-    public float speed = 10f;
+public class PlayerMover : MonoBehaviour {
+    public float speed = 20f;
     Rigidbody2D rb;
     bool facingRight = true;
     bool grounded;
@@ -29,6 +29,7 @@ public class PayerMover : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.P)) {
             if (MarioIsSmall) {
                 Big();
+               
             } else {
                 Small();
             }
@@ -39,7 +40,11 @@ public class PayerMover : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Space) && grounded) {
             Jump();
         }
-        Momentum();//TODO fix the slowing
+        if (Input.GetKey(KeyCode.X)) {
+            if (rb.velocity.x != 0f) {
+
+                Momentum();//TODO fix the slowing
+            } }
         if (Input.GetKeyDown(KeyCode.E)) {
             Shoot();
         }
@@ -50,10 +55,6 @@ public class PayerMover : MonoBehaviour {
         rb.velocity = new Vector2(HorizotalMov * speed, rb.velocity.y);
         if ((!facingRight && HorizotalMov < 0.0f) ||
             (facingRight && HorizotalMov > 0.0f)) {
-            // now pressing in different direction than formerly facing: flip sprite & facing
-            //var scale = sprite.localScale;
-           // scale.x *= -1;
-            //sprite.localScale = scale;
             facingRight = !facingRight;
             transform.Rotate(0f,180f, 0f);
         }
@@ -62,6 +63,7 @@ public class PayerMover : MonoBehaviour {
         MarioMini.SetActive(false);
         MarioBig.SetActive(true);
         MarioIsSmall = false;
+       
     }
     public void Small() {
         MarioMini.SetActive(true);
@@ -102,21 +104,19 @@ public class PayerMover : MonoBehaviour {
         if (Input.GetKey(KeyCode.X)) {
 
 
+          
 
         }
 
 
     }
-    void Changestate() {
-
-
-    }
+    
      void  Momentum() {
         float HorizotalMov = Input.GetAxis("Horizontal");
-        if (Input.GetKeyDown(KeyCode.E) && Input.GetKeyDown(KeyCode.X)) {
+        {
 
-            
-            rb.velocity = new Vector3(HorizotalMov * speed*0.5f*Time.deltaTime, rb.velocity.y);
+            print("slow down");
+            rb.velocity = new Vector3(HorizotalMov * speed* 0.9f* Time.deltaTime, rb.velocity.y);
             
         }
 

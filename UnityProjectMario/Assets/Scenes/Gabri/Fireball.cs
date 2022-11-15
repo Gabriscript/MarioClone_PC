@@ -17,8 +17,11 @@ public class Fireball : MonoBehaviour
     
     private void OnCollisionEnter2D(Collision2D collision) {
         //Explode();
-        if (collision.gameObject.tag == "Enemy")
-               Destroy(gameObject);
+
+        if (collision.gameObject.tag == "Enemy") Destroy(gameObject);
+        if (collision.gameObject.tag == "Wall") Destroy(gameObject);
+
+
     }
 
    /* void Explode() {
