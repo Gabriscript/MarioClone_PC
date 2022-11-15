@@ -2,23 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class PayerMover : MonoBehaviour {
-    public float speed = 2f;
+    public float speed = 10f;
     Rigidbody2D rb;
     bool facingRight = true;
     bool grounded;
+    public GameObject MarioMini;
+    public GameObject MarioBig;
     Transform sprite;
+    Transform spriteMini;
     public GameObject fireball;
-   // enum animState { Idle, Run, Jump, Death,SmallMario,NormalMario }; TODO BIG Mario Small Mario
+    public Transform Firestart;
+    int hP = 2;
+    public static bool MarioIsSmall = false;
+    // enum animState { Idle, Run, Jump, Death,SmallMario,NormalMario }; TODO BIG Mario Small Mario
 
     void Awake() {
         rb = GetComponent<Rigidbody2D>();
         sprite = transform.Find("Mario_1");
+        spriteMini = transform.Find("MarioMini");
     }
 
 
     void Update() {
-
+        if (Input.GetKeyDown(KeyCode.P)) {
+            if (MarioIsSmall) {
+                Big();
+            } else {
+                Small();
+            }
+        }
         UpdateFacing();
         Rush();
         Crouch();//TODO crouching movement 
@@ -34,18 +48,29 @@ public class PayerMover : MonoBehaviour {
 
         float HorizotalMov = Input.GetAxis("Horizontal");
         rb.velocity = new Vector2(HorizotalMov * speed, rb.velocity.y);
-        if ((!facingRight && HorizotalMov < -0.1f) ||
-            (facingRight && HorizotalMov > 0.1f)) {
+        if ((!facingRight && HorizotalMov < 0.0f) ||
+            (facingRight && HorizotalMov > 0.0f)) {
             // now pressing in different direction than formerly facing: flip sprite & facing
-            var scale = sprite.localScale;
-            scale.x *= -1;
-            sprite.localScale = scale;
+            //var scale = sprite.localScale;
+           // scale.x *= -1;
+            //sprite.localScale = scale;
             facingRight = !facingRight;
+            transform.Rotate(0f,180f, 0f);
         }
     }
+    public void Big (){
+        MarioMini.SetActive(false);
+        MarioBig.SetActive(true);
+        MarioIsSmall = false;
+    }
+    public void Small() {
+        MarioMini.SetActive(true);
+        MarioBig.SetActive(false);
+        MarioIsSmall = true;
+    }
     void Shoot() {
-        var fireObject = Instantiate(fireball);
-        fireObject.transform.position = transform.position;
+         Instantiate(fireball,Firestart.position,Firestart.rotation);
+       
 
     }
     public void Rush() {
@@ -58,23 +83,31 @@ public class PayerMover : MonoBehaviour {
         }
 
     }
+    private void OnCollisionEnter2D(Collision2D collision) {
+        if (collision.collider.CompareTag("Enemy")) {
+            hP--;
+        }
+        if (collision.collider.CompareTag("Ground")) {
+            grounded = true;
+        }
+    }
     void Jump() {
        
             rb.velocity = new Vector2(rb.velocity.x, speed);
             grounded = false;
         
     }
-    private void OnCollisionEnter2D(Collision2D collision) {
-        if (collision.gameObject.tag == "Ground")
-            grounded = true;
-    }
-
+  
     void Crouch() {
         if (Input.GetKey(KeyCode.X)) {
 
 
 
         }
+
+
+    }
+    void Changestate() {
 
 
     }

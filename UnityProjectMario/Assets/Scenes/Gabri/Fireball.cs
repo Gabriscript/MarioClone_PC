@@ -3,23 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Fireball : MonoBehaviour
-{ public float speed = 5;
-    CircleCollider2D circleColli;
+{ public float speed = 20f;
+    
     public GameObject  fireball ;
-    // Start is called before the first frame update
-    void Start()
+    public  Rigidbody2D rb;
+   
+         void Start()
     {
-        circleColli = GetComponent<CircleCollider2D>();
-    }
+        Destroy(gameObject, 1f);
+        rb.velocity =  transform.right * speed;
+    }        
 
-    // Update is called once per frame
-    void Update()
-    {
-        float movement = speed * Time.deltaTime;
-        transform.position = new Vector3(movement, 0, 0);
-        
-        
-    }
+    
     private void OnCollisionEnter2D(Collision2D collision) {
         //Explode();
         if (collision.gameObject.tag == "Enemy")
@@ -30,4 +25,7 @@ public class Fireball : MonoBehaviour
         var explo = Instantiate(*explosionPrefab*);
         explo.transform.position = transform.position;
     }*/
+  
+
 }
+
