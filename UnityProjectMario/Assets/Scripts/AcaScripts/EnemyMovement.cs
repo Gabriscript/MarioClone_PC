@@ -9,7 +9,7 @@ public class EnemyMovement : MonoBehaviour {
     public float dirX = -1f;
     Vector2 enemySize;
     Vector2 feetSize;
-    float groundCheckDepth = 0.25f;
+    float groundCheckDepth = 0.1f;
     public LayerMask platform;
     Vector2 rayAngleRight;
     Vector2 rayAngleLeft;
@@ -27,6 +27,19 @@ public class EnemyMovement : MonoBehaviour {
 
     void FixedUpdate() {
 
+
+        // if cliff edge, turn around
+        var edger = Physics2D.Raycast(transform.position + 0.5f * Vector3.right, Vector3.down, range, platform);
+        var edgel = Physics2D.Raycast(transform.position + 0.5f * -Vector3.right, Vector3.down, range, platform);
+
+        if (enemyType == enemyCat.RedKoopa) {
+            if (edger == false) {
+                dirX = -1f;
+            }
+            if (edgel == false) {
+                dirX = 1f;
+            }
+        }
         //hits wall, other enemies
         var hits = Physics2D.BoxCastAll(transform.position, enemySize, 0, rb.velocity, rb.velocity.magnitude * Time.deltaTime);
 
@@ -44,26 +57,14 @@ public class EnemyMovement : MonoBehaviour {
         }
 
         // standing on a floor, if not, fall
-        //var floor = Physics2D.OverlapBox(transform.position + Vector3.down * groundCheckDepth * 0.25f, feetSize, 0, platform);
+        var floor = Physics2D.OverlapBox(transform.position + Vector3.down * groundCheckDepth * 0.5f, feetSize, 0, platform);
 
-        //if (floor == null) {
-        //    rb.gravityScale = 1f;
-        //}
-        //else {
-        //    rb.gravityScale = 0f;
-        //    rb.velocity = Vector2.zero;
-        //}
-
-        // if cliff edge, turn around
-
-        var edger = Physics2D.Raycast(transform.position + 0.5f * Vector3.right, Vector3.down, range, platform);
-        if (edger == false) {
-            dirX = -1f;
+        if (floor == null) {
+            rb.gravityScale = 1f;
         }
-        
-        var edgel = Physics2D.Raycast(transform.position + 0.5f * -Vector3.right, Vector3.down, range, platform);
-        if (edgel == false) {
-            dirX = 1f;
+        else {
+            rb.gravityScale = 0f;
+            rb.velocity = Vector2.zero;
         }
 
         //enemy movement type and speed
