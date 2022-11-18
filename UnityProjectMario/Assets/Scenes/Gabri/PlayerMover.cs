@@ -36,7 +36,13 @@ public class PlayerMover : MonoBehaviour {
         }
         UpdateFacing();
         Rush();
-        Crouch();//TODO crouching movement 
+        if (Input.GetKeyDown(KeyCode.X)) {
+            if (grounded == false) {
+
+                Buttslump();
+            }
+
+        };
         if (Input.GetKeyDown(KeyCode.Space) && grounded) {
             Jump();
         }
@@ -47,6 +53,9 @@ public class PlayerMover : MonoBehaviour {
             } }
         if (Input.GetKeyDown(KeyCode.E)) {
             Shoot();
+        }
+        if(hP == 0) {
+           // Die();
         }
     }                                    //         ---alternative movement--
     void UpdateFacing() {/* float HorizotalMov = Input.GetAxis("Horizontal");rb.velocity = new Vector2(HorizotalMov * speed, rb.velocity.y); if (HorizotalMov > 0.1f) {transform.localScale = Vector3.one;  }  if ( HorizotalMov < -0.1f) {transform.localScale = new Vector3(-1,1, 1);*/
@@ -100,14 +109,10 @@ public class PlayerMover : MonoBehaviour {
         
     }
   
-    void Crouch() {
-        if (Input.GetKey(KeyCode.X)) {
+    void Buttslump() {
 
-
-          
-
-        }
-
+       
+      rb.velocity =  Vector2.down * speed ;  
 
     }
     
