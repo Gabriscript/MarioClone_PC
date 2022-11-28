@@ -14,6 +14,12 @@ public class EnemyMovement : MonoBehaviour {
     Vector2 rayAngleRight;
     Vector2 rayAngleLeft;
     float range = 1f;
+    public LayerMask turnCollision;
+    float tickTime = 5f;
+    public float timer;
+    Animator anim;
+    PipeCollider pipe;
+    
 
     void Start() {
         rb = GetComponent<Rigidbody2D>();
@@ -40,9 +46,9 @@ public class EnemyMovement : MonoBehaviour {
                 }
             }
             //hits wall, other enemies
-            var hits = Physics2D.BoxCastAll(transform.position, enemySize, 0, rb.velocity, rb.velocity.magnitude * Time.deltaTime);
+            var hits = Physics2D.BoxCastAll(transform.position, enemySize, 0, rb.velocity, rb.velocity.magnitude * Time.deltaTime, turnCollision);
 
-            if (hits.Length > 2) {
+            if (hits.Length > 1) {
                 foreach (var hit in hits) {
                     if (hit.collider.gameObject != gameObject) {
                         if (hit.point.x > transform.position.x) {
@@ -84,21 +90,26 @@ public class EnemyMovement : MonoBehaviour {
         }
 
         if (enemyType == enemyCat.RedKoopa) {
-            movementSpeed = 5f;
+            movementSpeed = 0f;
             rb.velocity = new Vector2(movementSpeed * dirX, rb.velocity.y);
         }
 
         if (enemyType == enemyCat.PiranhaPlant) {
             movementSpeed = 3f;
-            rb.velocity = transform.up * movementSpeed;
+
+            anim = GetComponent<Animator>();
+            pipe = GetComponentInParent<PipeCollider>();
+
+            
+            if (timer >= 5) {
+                if (pipe.frogNear == false) {
+                    timer -= tickTime;
+                    anim.Play("piranhaPop");
+                }
+            } else {
+                timer += Time.deltaTime;
+            }
         }
-
-        //rb.velocity = transform.up * movementSpeed;
-
-        //float maxX = 1f;
-        //var newPos = transform.position;
-        //newPos.y = (Mathf.PingPong(Time.time, 2) - 1)*maxX;
-        //transform.position = newPos;
     }
 }
 
