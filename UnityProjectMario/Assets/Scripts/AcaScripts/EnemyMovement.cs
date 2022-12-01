@@ -96,8 +96,9 @@ public class EnemyMovement : MonoBehaviour {
         }
 
         if (enemyType == enemyCat.Koopa) {
-            movementSpeed = 5f;
+            movementSpeed = 1f;
             rb.velocity = new Vector2(movementSpeed * dirX, rb.velocity.y);
+            anim.Play("vSnailAnimation");
         }
 
         if (enemyType == enemyCat.RedKoopa) {
