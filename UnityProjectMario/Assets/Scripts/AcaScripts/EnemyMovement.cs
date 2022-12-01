@@ -25,9 +25,9 @@ public class EnemyMovement : MonoBehaviour {
 
     void Start() {
         rb = GetComponent<Rigidbody2D>();
-        enemySize = GetComponent<BoxCollider2D>().size;
+        enemySize = GetComponent<BoxCollider2D>().size * 0.95f;
         anim = enemyAnimation.GetComponent<Animator>();
-        feetSize = new Vector2(enemySize.x, groundCheckDepth);
+        feetSize = new Vector3(enemySize.x, groundCheckDepth);
         rayAngleRight = new Vector2(5, -1).normalized;
         rayAngleLeft = new Vector2(-5, -1).normalized;
     }
@@ -50,9 +50,9 @@ public class EnemyMovement : MonoBehaviour {
             }
 
             //hits wall, other enemies
-            var hits = Physics2D.BoxCastAll(transform.position, enemySize, 0, rb.velocity, rb.velocity.magnitude * Time.deltaTime, turnCollision);
+            var hits = Physics2D.BoxCastAll(transform.position + Vector3.up * 0.51f * enemySize.y, enemySize, 0, rb.velocity, rb.velocity.magnitude * Time.deltaTime, turnCollision);
 
-            if (hits.Length > 2) {
+            if (hits.Length > 1) {
                 foreach (var hit in hits) {
                     if (hit.collider.gameObject != gameObject) {
                         if (hit.point.x > transform.position.x) {
