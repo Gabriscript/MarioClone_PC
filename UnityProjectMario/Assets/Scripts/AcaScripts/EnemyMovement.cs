@@ -88,6 +88,7 @@ public class EnemyMovement : MonoBehaviour {
         if (enemyType == enemyCat.Goompa) {
             movementSpeed = 1f;
             rb.velocity = new Vector2(movementSpeed * dirX, rb.velocity.y);
+            anim.Play("snek");
         }
 
         if (enemyType == enemyCat.Mushroom) {
