@@ -2,11 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class Coins : MonoBehaviour
 {
-
-    public int coins;
-
+    GameManager gm;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,18 +14,10 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-
-    public void Coin() {
-        coins += 1;
+    void OnTriggerEnter2D(Collider2D collision) {
+        gm.Coin();
     }
-
-    //time
-    //score
-    //coins collected
-    //big coins collected
-
-
 }
