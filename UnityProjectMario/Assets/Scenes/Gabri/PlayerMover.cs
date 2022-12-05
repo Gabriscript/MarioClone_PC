@@ -28,8 +28,12 @@ public class PlayerMover : MonoBehaviour {
     bool buttSlumpPressed = false;
     public Transform wallGrabPoint;
     public Animator anim;
-
-
+    bool canMove = true;
+   int facingDirection = 1;
+    [SerializeField]  Vector2 wallJumpDirection;
+    [Range(1, 10)] public float jumpVelocity;
+    //public float fallMultiplier = 2.5f;
+    //public float lowJumpMultiplayer = 2f;
     // enum animState { Idle, Run, Jump, Death,SmallMario,NormalMario }; TODO BIG Mario Small Mario
 
     void Awake() {
@@ -43,7 +47,8 @@ public class PlayerMover : MonoBehaviour {
         if (jumpPressed) {
             Jump();
             jumpPressed = false;
-            
+           
+
         }
         //if (jumpwallPressed && wallhangPressed) {
         //    WallJumpToRight();
@@ -75,23 +80,29 @@ public class PlayerMover : MonoBehaviour {
 
     void Update() {
         grounded = Physics2D.OverlapCircle(groundCheckPoint.position, .2f, Platform);
-       onWall = Physics2D.OverlapCircle(wallGrabPoint.position, .2f, Wall);
+        onWall = Physics2D.OverlapCircle(wallGrabPoint.position, .2f, Wall);
 
 
-        if (Input.GetKeyDown(KeyCode.E)) { if (fireList.Count < 2) Shoot();}
+        if (Input.GetKeyDown(KeyCode.E)) { if (fireList.Count < 2) Shoot(); }
         if (Input.GetKeyDown(KeyCode.P)) { if (MarioIsSmall) { Big(); } else { Small(); } }
-        UpdateFacing();
+        if (grounded) { UpdateFacing(); canMove = true; }
         Rush();
         if (Input.GetKeyDown(KeyCode.X)) { if (grounded == false) { buttSlumpPressed = true; } }
-        if (Input.GetKeyDown(KeyCode.Space)) {  jumpPressed = true; }
-        if (Input.GetKey(KeyCode.X)) { if (rb.velocity.x != 0f) { momentumPressed = true; } }
+        if (Input.GetKeyDown(KeyCode.Space)) { jumpPressed = true;
+          
+        }
+        if (Input.GetKeyDown(KeyCode.X)) { //if (rb.velocity.x != 0f)
+            {
+                if (grounded == true)
+                    momentumPressed = true; } }
         //CHECK TO BE ABLE TO WALLJUMP
-            if (onWall == true && grounded == false ) {
-               if (!facingRight && Input.GetAxisRaw("Horizontal") > 0 || (facingRight && Input.GetAxisRaw("Horizontal") < 0)) {
+        if (onWall == true && grounded == false) {
+            if (!facingRight && Input.GetAxisRaw("Horizontal") > 0 || (facingRight && Input.GetAxisRaw("Horizontal") < 0)) {
 
                 wallhangPressed = true;
-                }
-            }       
+            }
+        }
+       
           
             if (hP == 0) {
                 //Die();
@@ -102,15 +113,19 @@ public class PlayerMover : MonoBehaviour {
         anim.SetBool("", wallhangPressed);*/
         
 
-    }                                  
+    }            
+    
     public void UpdateFacing() {
-
+        if (canMove) { 
         float HorizotalMov = Input.GetAxis("Horizontal");
         rb.velocity = new Vector2(HorizotalMov * speed, rb.velocity.y);
-        if ((!facingRight && HorizotalMov < 0.0f) ||
-            (facingRight && HorizotalMov > 0.0f)) {
-            facingRight = !facingRight;
-            transform.Rotate(0f, 180f, 0f);
+            if ((!facingRight && HorizotalMov < 0.0f) ||
+                (facingRight && HorizotalMov > 0.0f)) {
+                facingDirection = facingDirection * -1;
+                facingRight = !facingRight;
+                
+                transform.Rotate(0f, 180f, 0f);
+            }
         }
 
     }
@@ -155,7 +170,7 @@ public class PlayerMover : MonoBehaviour {
         rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.8f);
 
     }
-      
+     
     public void Jump() {
         /*if (wallhangPressed == true) {
               Quaternion rotateCounterClockwise = Quaternion.Euler(0, 0,135);
@@ -184,15 +199,22 @@ public class PlayerMover : MonoBehaviour {
 
         if (wallhangPressed) {
             {
-               
-                rb.velocity = new Vector2(-Input.GetAxisRaw("Horizontal") * 750, 25);
-               
+                canMove = false;
+               rb.velocity = new Vector2(-Input.GetAxisRaw("Horizontal") * 20 , 20);
+                
+              //facingDirection = facingDirection * -1;
+                
+
+               //  Vector2 direction = new Vector2(wallJumpDirection.x * -facingDirection, wallJumpDirection.y);
+             //  rb.AddForce(direction, ForceMode2D.Impulse);
             }
         }
 
         else if (grounded) {
 
-            rb.velocity = new Vector2(rb.velocity.x, speed);
+         //  rb.velocity += Vector2.up * jumpVelocity;
+
+            rb.AddForce(Vector2.up * jumpVelocity,ForceMode2D.Impulse);
             grounded = false;
         }
 
@@ -206,14 +228,12 @@ public class PlayerMover : MonoBehaviour {
     }
 
     public void Momentum() {
-       // float HorizotalMov = Input.GetAxis("Horizontal");
+        float HorizotalMov = Input.GetAxis("Horizontal");
 
         print("slow down");
-        //rb.gravityScale = 20 * Time.deltaTime;
-        rb.velocity -= 0.1f * rb.velocity;
-        // speed -=  * Time.deltaTime;
 
-        //rb.velocity= new Vector3(HorizotalMov * speed * 0.4f * Time.deltaTime, rb.velocity.y);
+        speed *= 0.99f * Time.deltaTime ;
+       // rb.velocity= new Vector3(HorizotalMov * speed * 0.4f * Time.deltaTime, rb.velocity.y);
 
     }
     
