@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2469381813445493473}
   - component: {fileID: 2469381813445493472}
   - component: {fileID: 2469381813445493487}
-  - component: {fileID: -304608531866866244}
+  - component: {fileID: 7973371734579592424}
   m_Layer: 0
   m_Name: Fireball
   m_TagString: Untagged
@@ -100,8 +100,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 20
+  pm: {fileID: 0}
   fireball: {fileID: 2469381813445493486}
-  rb: {fileID: -304608531866866244}
+  rb: {fileID: 7973371734579592424}
 --- !u!58 &2469381813445493487
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -118,7 +119,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!50 &-304608531866866244
+--- !u!50 &7973371734579592424
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -133,7 +134,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 0.1
+  m_GravityScale: 3
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
