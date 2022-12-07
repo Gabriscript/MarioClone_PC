@@ -50,16 +50,32 @@ public class EnemyMovement : MonoBehaviour {
             }
 
             //hits wall, other enemies
-            var hits = Physics2D.BoxCastAll(transform.position + Vector3.up * 0.51f * enemySize.y, enemySize, 0, rb.velocity, rb.velocity.magnitude * Time.deltaTime, turnCollision);
-
-            if (hits.Length > 1) {
-                foreach (var hit in hits) {
-                    if (hit.collider.gameObject != gameObject) {
-                        if (hit.point.x > transform.position.x) {
-                            dirX = -1f;
+            if (enemyType == enemyCat.Mushroom) {
+                var hits = Physics2D.BoxCastAll(transform.position + Vector3.up * 0.51f * enemySize.y, enemySize, 0, rb.velocity, rb.velocity.magnitude * Time.deltaTime, turnCollision);
+                if (hits.Length > 0) {
+                    foreach (var hit in hits) {
+                        if (hit.collider.gameObject != gameObject) {
+                            if (hit.point.x > transform.position.x) {
+                                dirX = -1f;
+                            }
+                            if (hit.point.x < transform.position.x) {
+                                dirX = 1f;
+                            }
                         }
-                        if (hit.point.x < transform.position.x) {
-                            dirX = 1f;
+                    }
+                }
+            } else {
+                var hits = Physics2D.BoxCastAll(transform.position + Vector3.up * 0.51f * enemySize.y, enemySize, 0, rb.velocity, rb.velocity.magnitude * Time.deltaTime, turnCollision);
+
+                if (hits.Length > 1) {
+                    foreach (var hit in hits) {
+                        if (hit.collider.gameObject != gameObject) {
+                            if (hit.point.x > transform.position.x) {
+                                dirX = -1f;
+                            }
+                            if (hit.point.x < transform.position.x) {
+                                dirX = 1f;
+                            }
                         }
                     }
                 }
@@ -92,7 +108,7 @@ public class EnemyMovement : MonoBehaviour {
         }
 
         if (enemyType == enemyCat.Mushroom) {
-            movementSpeed = 2f;
+            movementSpeed = 2.5f;
             rb.velocity = new Vector2(movementSpeed * dirX, rb.velocity.y);
         }
 
