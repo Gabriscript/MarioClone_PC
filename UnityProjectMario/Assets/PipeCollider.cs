@@ -9,15 +9,16 @@ public class PipeCollider : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D player) {
         
-        if (player.gameObject.layer == 3) {
+        //if (player.gameObject.layer == 3) {
+            if (player.gameObject.name == "DummyPlayer") {
             frogNear = true;
         }
-
-    }
+     }
 
     void OnTriggerExit2D(Collider2D player) {
-        
-        if (player.gameObject.layer == 3) {
+            if (player.gameObject.name == "DummyPlayer") {
+
+            //if (player.gameObject.layer == 3) {
             frogNear = false;
         }
 

@@ -20,6 +20,8 @@ public class EnemyMovement : MonoBehaviour {
     public GameObject enemyAnimation;
     Animator anim;
     PipeCollider pipe;
+    Animator animSort;
+    SpriteRenderer rend;
 
     
 
@@ -27,15 +29,24 @@ public class EnemyMovement : MonoBehaviour {
         rb = GetComponent<Rigidbody2D>();
         enemySize = GetComponent<BoxCollider2D>().size * 0.95f;
         anim = enemyAnimation.GetComponent<Animator>();
+        animSort = GetComponentInChildren<Animator>();
+        rend = animSort.GetComponent<SpriteRenderer>();
         feetSize = new Vector3(enemySize.x, groundCheckDepth);
         rayAngleRight = new Vector2(5, -1).normalized;
         rayAngleLeft = new Vector2(-5, -1).normalized;
+
+        //randomize layer
+        int order;
+        order = Random.Range(1, 999);
+        rend.sortingOrder = order;
     }
 
     void FixedUpdate() {
 
 
         if (enemyType != enemyCat.PiranhaPlant) {
+
+
             // if cliff edge, turn around
             var edger = Physics2D.Raycast(transform.position + 0.5f * Vector3.right, Vector3.down, range, platform);
             var edgel = Physics2D.Raycast(transform.position + 0.5f * -Vector3.right, Vector3.down, range, platform);
