@@ -67,7 +67,7 @@ public class EnemyMovement : MonoBehaviour {
 
 
             // standing on a floor, if not, fall
-            var floor = Physics2D.OverlapBox(transform.position + Vector3.down * groundCheckDepth * 0.5f, feetSize, 0, platform);
+            var floor = Physics2D.OverlapBox(transform.position + Vector3.down * groundCheckDepth * 0.7f, feetSize, 0, platform);
 
             if (floor == null) {
                 rb.gravityScale = 1f;
