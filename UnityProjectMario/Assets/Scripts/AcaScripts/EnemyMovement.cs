@@ -11,6 +11,7 @@ public class EnemyMovement : MonoBehaviour {
     Vector2 feetSize;
     float groundCheckDepth = 0.1f;
     public LayerMask platform;
+    public LayerMask player;
     Vector2 rayAngleRight;
     Vector2 rayAngleLeft;
     float range = 1f;
@@ -20,6 +21,10 @@ public class EnemyMovement : MonoBehaviour {
     public GameObject enemyAnimation;
     Animator anim;
     PipeCollider pipe;
+    Animator animSort;
+    SpriteRenderer rend;
+    Vector2 stompCollider;
+    public GameObject shell;
 
     
 
@@ -27,15 +32,25 @@ public class EnemyMovement : MonoBehaviour {
         rb = GetComponent<Rigidbody2D>();
         enemySize = GetComponent<BoxCollider2D>().size * 0.95f;
         anim = enemyAnimation.GetComponent<Animator>();
+        animSort = GetComponentInChildren<Animator>();
+        rend = animSort.GetComponent<SpriteRenderer>();
         feetSize = new Vector3(enemySize.x, groundCheckDepth);
         rayAngleRight = new Vector2(5, -1).normalized;
         rayAngleLeft = new Vector2(-5, -1).normalized;
+        stompCollider = new Vector2(enemySize.x, 0.25f);
+
+        //randomize layer
+        int order;
+        order = Random.Range(1, 999);
+        rend.sortingOrder = order;
     }
 
     void FixedUpdate() {
 
 
         if (enemyType != enemyCat.PiranhaPlant) {
+
+
             // if cliff edge, turn around
             var edger = Physics2D.Raycast(transform.position + 0.5f * Vector3.right, Vector3.down, range, platform);
             var edgel = Physics2D.Raycast(transform.position + 0.5f * -Vector3.right, Vector3.down, range, platform);
@@ -81,7 +96,6 @@ public class EnemyMovement : MonoBehaviour {
                 }
             }
 
-
             // standing on a floor, if not, fall
             var floor = Physics2D.OverlapBox(transform.position + Vector3.down * groundCheckDepth * 0.7f, feetSize, 0, platform);
 
@@ -93,6 +107,24 @@ public class EnemyMovement : MonoBehaviour {
                 rb.velocity = Vector2.zero;
             }
         }
+
+        //death by stomp
+        var stomp = Physics2D.OverlapBox(transform.position + Vector3.up * enemySize.y * 0.25f, stompCollider, 0, player);
+
+        if (stomp == true) {
+            if (enemyType == enemyCat.Goompa) {
+                Destroy(gameObject);
+                //function to make mario hop a little
+            } else {
+                if (enemyType == enemyCat.RedKoopa || enemyType == enemyCat.Koopa) {
+                    Destroy(gameObject);
+                    Instantiate(shell, transform.position, transform.rotation);
+                    //function to make mario hop a little
+                }
+            }
+        }
+
+        
 
         // flip sprite
         bool flipped = dirX > 0;
