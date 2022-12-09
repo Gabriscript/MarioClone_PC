@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Fireball : MonoBehaviour
-{ public float speed = 20f;      
-    public  PlayerMover pm;
+{
+    public Vector2 velocity;
+
+    public PlayerMover pm;
     public GameObject  fireball ;
     public  Rigidbody2D rb;
     
@@ -12,14 +14,14 @@ public class Fireball : MonoBehaviour
     float timer = 0;
     private void Start() {
         rb = GetComponent<Rigidbody2D>();
-        rb.velocity = transform.right * speed;
+      
+        rb.velocity = velocity;
     }
     void Update() {
-       /*if(rb.velocity.y < velocity.y) {
+       if (rb.velocity.y < velocity.y)
             rb.velocity = velocity;
-        }*/
 
-        
+
         timer += Time.deltaTime;
         if (timer > ticktime) {
             Destroy(gameObject);
@@ -35,12 +37,14 @@ public class Fireball : MonoBehaviour
    
     private void OnCollisionEnter2D(Collision2D collision) {
         //Explode();
-       
-        if (collision.gameObject.tag == "Enemy") { Destroy(gameObject); pm.fireList.Remove(gameObject);Destroy(collision.gameObject); }
-        if (collision.gameObject.tag == "Wall") { Destroy(gameObject); pm.fireList.Remove(gameObject); }
-      //  if (collision.contacts[0].normal.x != 0) {
-        //    Destroy(gameObject);
-      //  }
+       rb.velocity = new Vector2(velocity.x, -velocity.y);
+
+        if (collision.gameObject.tag == "Enemy") { Destroy(collision.gameObject); Destroy(gameObject); pm.fireList.Remove(gameObject);Destroy(collision.gameObject); }
+      //  if (collision.gameObject.tag == "Wall") { Destroy(gameObject); pm.fireList.Remove(gameObject); }
+     if (collision.contacts[0].normal.x != 0) {
+            pm.fireList.Remove(gameObject);
+           Destroy(gameObject);
+       }
 
     }
    

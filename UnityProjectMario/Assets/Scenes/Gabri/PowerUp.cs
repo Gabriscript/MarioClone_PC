@@ -11,9 +11,9 @@ public class PowerUp : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision) {
 
-        FindObjectOfType<GameManager>().ActivatePowerup(powerup);
+        // FindObjectOfType<GameManager>().ActivatePowerup();//powerup
 
-        
+        FindObjectOfType<PlayerMover>().SetMarioState();
         Destroy(gameObject);
     }
    

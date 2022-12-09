@@ -5,10 +5,9 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     PlayerMover Player;
-    [SerializeField] List<PowerUpType> marioPowerups;//addes this
-    public int hits;// added this
+    
     public int coins;
-    public int lives;
+    public int lives = 2;
     public int score;
     public int bigCoins;
 
@@ -40,18 +39,6 @@ public class GameManager : MonoBehaviour
     //coins collected
     //big coins collected
 
-    public void ActivatePowerup(PowerUpType powerup) {
-        print("Power activated : " + powerup);
-        if (powerup == PowerUpType.ExtraLife) {
-            lives++;
-            // UpdateLivesText();
-        } else if (powerup == PowerUpType.Mushroom) {
-            hits = 2;
-        } else if (powerup == PowerUpType.FireFlower) {
-
-            hits = 3;
-        } else {
-            Debug.LogError("Can´t handle powerup type : " + powerup);
-        }
-    }
+   
+   
 }
