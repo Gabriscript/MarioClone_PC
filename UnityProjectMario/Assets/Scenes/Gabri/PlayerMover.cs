@@ -7,21 +7,24 @@ using System;
 
 public class PlayerMover : MonoBehaviour {
 
-    [SerializeField] List<PowerUpType> marioPowerups;//addes this
+   // [SerializeField] List<PowerUpType> marioPowerups;//addes this
     public  int hits = 2;// added this
-
-    public  GameManager gm;
+   // public SpriteRenderer[] rend;
+   // Color c;
+    GameManager gm;
     Rigidbody2D rb; 
     [Header("Move info")]
     public float speed = 20f;
     bool wallhangPressed = false;
     bool jumpPressed = false;
     bool momentumPressed = false;
-    bool facingRight = false;
+    bool facingRight = true;
     bool grounded ;
     bool canMove = true;
     bool onWall = false;    
-    bool buttSlumpPressed = false;   
+    bool buttSlumpPressed = false;
+    public float deathFromFallingY;
+    bool dead;    
     [SerializeField] Vector2 wallJumpDirection;
     [Range(1, 10)] public float jumpVelocity;
     SpriteRenderer bigSprite;
@@ -33,13 +36,14 @@ public class PlayerMover : MonoBehaviour {
     public GameObject MarioMini;
     public GameObject MarioBig;
     public GameObject FireMan;
-    Transform sprite;
-    Transform spriteMini;
+   // Transform sprite;
+    //Transform spriteMini;
     public GameObject fireball;
     public Transform Firestart;
     public Animator anim;
-    PowerUpType currentState = PowerUpType.None;
+   // PowerUpType currentState = PowerUpType.None;
     public float fireDistance = 1f;
+    
 
 
     [Header("Collision info")]   
@@ -50,12 +54,21 @@ public class PlayerMover : MonoBehaviour {
     public Transform wallGrabPoint;
     public float grabDistance = 1f;
    
-   
-   
-   
+
+    [Header("Audio info")]
+
+    [SerializeField]  private AudioSource FireballSound;
+    [SerializeField] private  AudioSource  jumpSound;
+    [SerializeField] private AudioSource walljump;
+    [SerializeField] private AudioSource death;
+
+
+
+
     // enum animState { Idle, Run, Jump, Death,SmallMario,NormalMario }; TODO BIG Mario Small Mario
 
     void Awake() {
+      
         FindObjectOfType<GameManager>();
         rb = GetComponent<Rigidbody2D>();
         bigSprite = transform.Find("Mario_1").GetComponent<SpriteRenderer>();
@@ -86,7 +99,11 @@ public class PlayerMover : MonoBehaviour {
         if (canMove) {
             Move();
         }
-
+        if (hits <= 0  || transform.position.y < this.deathFromFallingY) { 
+            //Die();
+            return;
+       
+        }
     }
 
 
@@ -96,12 +113,14 @@ public class PlayerMover : MonoBehaviour {
 
         CollisionCheck();
         //Abl to shoot
-       // if (gm.hits == 3)
-         //   {
+       if (hits == 3)
+          {
             if (Input.GetKeyDown(KeyCode.E)) {
-                if (fireList.Count < 2) Shoot();
+            if (fireList.Count < 2) { Shoot();
+                FireballSound.Play();
             }
-      //  }
+            }
+      }
        
       
         Rush();
@@ -115,7 +134,7 @@ public class PlayerMover : MonoBehaviour {
                 }
         //CHECK TO BE ABLE TO WALLJUMP
         if (onWall == true && grounded == false) {
-            if (facingRight && Input.GetAxisRaw("Horizontal") > 0 || (!facingRight && Input.GetAxisRaw("Horizontal") < 0)) {
+            if (!facingRight && Input.GetAxisRaw("Horizontal") > 0 || (facingRight && Input.GetAxisRaw("Horizontal") < 0)) {
 
                 wallhangPressed = true;
             }
@@ -123,12 +142,13 @@ public class PlayerMover : MonoBehaviour {
         //tO MOVE AFTER WALLJUMP
         if (grounded)
             canMove = true;
-      
 
-      /*  if (hits <= 0) {
-            //Die();
-            gm.lives--;
-        }*/
+
+        /*  if (hits <= 0) {
+              //Die();
+              gm.lives--;
+        death.Play();
+          }*/
 
         /* anim.SetBool("", buttSlumpPressed);
          anim.SetBool("", jumpPressed);
@@ -137,17 +157,18 @@ public class PlayerMover : MonoBehaviour {
 
 
         if (Input.GetAxis("Horizontal")< -0.1f) {
-            facingRight = false; }
+            facingRight =false; }
         else if (Input.GetAxis("Horizontal") > 0.1f) {
-            facingRight = true;
+            facingRight =true;
         }
-        //Firestart.localEulerAngles = Vector3.right * fireDistance * (facingRight ? 1 : -1);
+       
         Firestart.localPosition = Vector3.right * fireDistance * (facingRight ? 1 : -1);
         wallGrabPoint.localPosition = Vector3.right * grabDistance * (facingRight ? 1 : -1); 
 
 
-        bigSprite.flipX = facingRight;
-        smallSprite.flipX = facingRight;
+        bigSprite.flipX = !facingRight;
+        smallSprite.flipX = !facingRight;
+        FireSprite.flipX = !facingRight;
     }
   
     private void CollisionCheck() {
@@ -189,7 +210,7 @@ public class PlayerMover : MonoBehaviour {
         var fireB = Instantiate(fireball, Firestart.position, Firestart.rotation);
         var fireballmov = fireB.GetComponent<Fireball>();
         fireballmov.pm = this;
-        fireballmov.velocity = new Vector2(fireballmov.velocity.x* (facingRight ? 1 : -1),fireballmov.velocity.y);
+        fireballmov.velocity = new Vector2(fireballmov.velocity.x * (facingRight ? 1 : -1),fireballmov.velocity.y);
         fireList.Add(fireB);
 
     }
@@ -217,7 +238,7 @@ public class PlayerMover : MonoBehaviour {
             {
                 
             rb.velocity = new Vector2(-Input.GetAxisRaw("Horizontal") * 20 , 20);
-
+                walljump.Play();
                 canMove = false;  
             
             }
@@ -228,6 +249,8 @@ public class PlayerMover : MonoBehaviour {
 
             rb.AddForce(Vector2.up * jumpVelocity,ForceMode2D.Impulse);
             grounded = false;
+
+            jumpSound.Play();
         }
 
     }
@@ -236,6 +259,14 @@ public class PlayerMover : MonoBehaviour {
             hits--;
         }
     }
+
+    /*public void Die() {
+         dead = true;
+       //  animator.Play("death");
+              GetComponentInChildren<Collider2D>().enabled = false;
+         rb.velocity = Vector2.up * 5f;
+          gm.lives--;
+     }*/
     public void Buttslump() {
 
 
@@ -254,12 +285,8 @@ public class PlayerMover : MonoBehaviour {
 
         }
     }
-   /* public void ActivatePowerUp() {//PowerUpType powerup
-
-        SetMarioState();
-        
-    }*/
-    public void SetMarioState() {//PowerUpType Newstate
+ 
+    public void SetMarioState() {
 
 
         if (hits == 1) {
@@ -273,16 +300,19 @@ public class PlayerMover : MonoBehaviour {
             FireMario();
         }
 
-      //  currentState = Newstate;
+      
     }
-
-
-
+    
 
 
     void StompJump() {
         rb.AddForce(Vector2.up * jumpVelocity/2, ForceMode2D.Impulse);
     }
+          
 }
+
+
+
+
 
 
