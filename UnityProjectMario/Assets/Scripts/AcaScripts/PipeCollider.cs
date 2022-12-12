@@ -8,15 +8,15 @@ public class PipeCollider : MonoBehaviour
     public LayerMask frog;
 
     void OnTriggerEnter2D(Collider2D player) {
-        
-        //if (player.gameObject.layer == 3) {
-            if (player.gameObject.name == "DummyPlayer") {
+
+        //if (player.gameObject.name == "DummyPlayer") {
+        if (player.gameObject.layer == 3) {
             frogNear = true;
         }
      }
 
     void OnTriggerExit2D(Collider2D player) {
-            if (player.gameObject.name == "DummyPlayer") {
+            if (player.gameObject.layer == 3) {
 
             //if (player.gameObject.layer == 3) {
             frogNear = false;

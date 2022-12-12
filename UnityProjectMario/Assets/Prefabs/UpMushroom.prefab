@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: d34d7bcc97e8ff144ac0b334b2f9692b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6e0fe5b8a1238db42bf0944272c6c8fc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -158,11 +158,15 @@ MonoBehaviour:
   platform:
     serializedVersion: 2
     m_Bits: 64
+  player:
+    serializedVersion: 2
+    m_Bits: 0
   turnCollision:
     serializedVersion: 2
     m_Bits: 64
   timer: 0
   enemyAnimation: {fileID: 6191276560630251238}
+  shell: {fileID: 0}
 --- !u!50 &6191276560630251233
 Rigidbody2D:
   serializedVersion: 4

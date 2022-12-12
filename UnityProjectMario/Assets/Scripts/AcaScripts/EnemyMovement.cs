@@ -123,7 +123,6 @@ public class EnemyMovement : MonoBehaviour {
                 }
             }
         }
-
         
 
         // flip sprite
