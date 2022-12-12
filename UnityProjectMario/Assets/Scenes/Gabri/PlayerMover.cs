@@ -7,60 +7,63 @@ using System;
 
 public class PlayerMover : MonoBehaviour {
 
-   // [SerializeField] List<PowerUpType> marioPowerups;//addes this
-    public  int hits = 2;// added this
-   // public SpriteRenderer[] rend;
-   // Color c;
+
+    public int hits = 2;
+
+    Coins coins;
     GameManager gm;
-    Rigidbody2D rb; 
+    Rigidbody2D rb;
     [Header("Move info")]
     public float speed = 20f;
     bool wallhangPressed = false;
     bool jumpPressed = false;
     bool momentumPressed = false;
     bool facingRight = true;
-    bool grounded ;
+    bool grounded;
     bool canMove = true;
-    bool onWall = false;    
+    bool onWall = false;
     bool buttSlumpPressed = false;
     public float deathFromFallingY;
-    bool dead;    
+    bool dead;
     [SerializeField] Vector2 wallJumpDirection;
     [Range(1, 10)] public float jumpVelocity;
     SpriteRenderer bigSprite;
     SpriteRenderer smallSprite;
     SpriteRenderer FireSprite;
-    
+    private Vector3 respawnPosition;
+
 
     [Header("change status")]
     public GameObject MarioMini;
     public GameObject MarioBig;
     public GameObject FireMan;
-   // Transform sprite;
-    //Transform spriteMini;
     public GameObject fireball;
     public Transform Firestart;
     public Animator anim;
-   // PowerUpType currentState = PowerUpType.None;
     public float fireDistance = 1f;
-    
 
 
-    [Header("Collision info")]   
+
+    [Header("Collision info")]
     public LayerMask Platform;
     public LayerMask Wall;
-    public Transform groundCheckPoint;   
+    public Transform groundCheckPoint;
     public static bool MarioIsSmall = false;
     public Transform wallGrabPoint;
     public float grabDistance = 1f;
-   
+    [SerializeField] private float iFramesDuration;
+    [SerializeField] private int numberOfFlashes;
+
+
 
     [Header("Audio info")]
 
-    [SerializeField]  private AudioSource FireballSound;
-    [SerializeField] private  AudioSource  jumpSound;
+    [SerializeField] private AudioSource FireballSound;
+    [SerializeField] private AudioSource jumpSound;
     [SerializeField] private AudioSource walljump;
     [SerializeField] private AudioSource death;
+    [SerializeField] private AudioSource smallCo;
+    [SerializeField] private AudioSource bigCo;
 
 
 
@@ -68,8 +71,8 @@ public class PlayerMover : MonoBehaviour {
     // enum animState { Idle, Run, Jump, Death,SmallMario,NormalMario }; TODO BIG Mario Small Mario
 
     void Awake() {
-      
-        FindObjectOfType<GameManager>();
+        respawnPosition = transform.position;
+        gm = FindObjectOfType<GameManager>();
         rb = GetComponent<Rigidbody2D>();
         bigSprite = transform.Find("Mario_1").GetComponent<SpriteRenderer>();
         smallSprite = transform.Find("MarioMini").GetComponent<SpriteRenderer>();
@@ -80,9 +83,9 @@ public class PlayerMover : MonoBehaviour {
         if (jumpPressed) {
             Jump();
             jumpPressed = false;
-           
+
         }
-      
+
         if (buttSlumpPressed) {
             Buttslump();
             buttSlumpPressed = false;
@@ -99,10 +102,11 @@ public class PlayerMover : MonoBehaviour {
         if (canMove) {
             Move();
         }
-        if (hits <= 0  || transform.position.y < this.deathFromFallingY) { 
-            //Die();
-            return;
-       
+        if (hits <= 0 || transform.position.y < this.deathFromFallingY) {
+            Die();
+            transform.position = respawnPosition;
+
+
         }
     }
 
@@ -113,25 +117,26 @@ public class PlayerMover : MonoBehaviour {
 
         CollisionCheck();
         //Abl to shoot
-       if (hits == 3)
-          {
+        if (hits == 3) {
             if (Input.GetKeyDown(KeyCode.E)) {
-            if (fireList.Count < 2) { Shoot();
-                FireballSound.Play();
+                if (fireList.Count < 2) {
+                    Shoot();
+                    FireballSound.Play();
+                }
             }
-            }
-      }
-       
-      
+        }
+
+
         Rush();
         if (Input.GetKeyDown(KeyCode.X)) { if (grounded == false) { buttSlumpPressed = true; } }
-        if (Input.GetKeyDown(KeyCode.Space)) { jumpPressed = true;
-          
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            jumpPressed = true;
+
         }
         if (Input.GetKeyDown(KeyCode.X)) { //if (rb.velocity.x != 0f)
             Momentum();
-                //momentumPressed = true;
-                }
+            //momentumPressed = true;
+        }
         //CHECK TO BE ABLE TO WALLJUMP
         if (onWall == true && grounded == false) {
             if (!facingRight && Input.GetAxisRaw("Horizontal") > 0 || (facingRight && Input.GetAxisRaw("Horizontal") < 0)) {
@@ -144,11 +149,7 @@ public class PlayerMover : MonoBehaviour {
             canMove = true;
 
 
-        /*  if (hits <= 0) {
-              //Die();
-              gm.lives--;
-        death.Play();
-          }*/
+
 
         /* anim.SetBool("", buttSlumpPressed);
          anim.SetBool("", jumpPressed);
@@ -156,33 +157,33 @@ public class PlayerMover : MonoBehaviour {
 
 
 
-        if (Input.GetAxis("Horizontal")< -0.1f) {
-            facingRight =false; }
-        else if (Input.GetAxis("Horizontal") > 0.1f) {
-            facingRight =true;
+        if (Input.GetAxis("Horizontal") < -0.1f) {
+            facingRight = false;
+        } else if (Input.GetAxis("Horizontal") > 0.1f) {
+            facingRight = true;
         }
-       
+
         Firestart.localPosition = Vector3.right * fireDistance * (facingRight ? 1 : -1);
-        wallGrabPoint.localPosition = Vector3.right * grabDistance * (facingRight ? 1 : -1); 
+        wallGrabPoint.localPosition = Vector3.right * grabDistance * (facingRight ? 1 : -1);
 
 
         bigSprite.flipX = !facingRight;
         smallSprite.flipX = !facingRight;
         FireSprite.flipX = !facingRight;
     }
-  
+
     private void CollisionCheck() {
         grounded = Physics2D.OverlapCircle(groundCheckPoint.position, .2f, Platform);
         onWall = Physics2D.OverlapCircle(wallGrabPoint.position, .2f, Wall);
     }
-    private void Move() {      
-           
-            float HorizotalMov = Input.GetAxis("Horizontal");
+    private void Move() {
+
+        float HorizotalMov = Input.GetAxis("Horizontal");
         rb.velocity = new Vector2(HorizotalMov * speed, rb.velocity.y);
-      
-      
+
+
     }
-   
+
     public void Big() {
         MarioMini.SetActive(false);
         MarioBig.SetActive(true);
@@ -210,7 +211,7 @@ public class PlayerMover : MonoBehaviour {
         var fireB = Instantiate(fireball, Firestart.position, Firestart.rotation);
         var fireballmov = fireB.GetComponent<Fireball>();
         fireballmov.pm = this;
-        fireballmov.velocity = new Vector2(fireballmov.velocity.x * (facingRight ? 1 : -1),fireballmov.velocity.y);
+        fireballmov.velocity = new Vector2(fireballmov.velocity.x * (facingRight ? 1 : -1), fireballmov.velocity.y);
         fireList.Add(fireB);
 
     }
@@ -224,49 +225,59 @@ public class PlayerMover : MonoBehaviour {
         }
 
     }
-     
+
     public void WallHanging() {
 
         rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.8f);
 
     }
-     
+
     public void Jump() {
-      
+
 
         if (wallhangPressed) {
             {
-                
-            rb.velocity = new Vector2(-Input.GetAxisRaw("Horizontal") * 20 , 20);
+
+                rb.velocity = new Vector2(-Input.GetAxisRaw("Horizontal") * 20, 20);
                 walljump.Play();
-                canMove = false;  
-            
+                canMove = false;
+
             }
-        }
+        } else if (grounded) {
 
-        else if (grounded ) {
-                    
 
-            rb.AddForce(Vector2.up * jumpVelocity,ForceMode2D.Impulse);
+            rb.AddForce(Vector2.up * jumpVelocity, ForceMode2D.Impulse);
             grounded = false;
 
             jumpSound.Play();
         }
 
     }
-    private void OnCollisionEnter2D(Collision2D collision) {
+    private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.tag == "Enemy") {
             hits--;
+            StartCoroutine(Invulnerability());
+        }
+        if (collision.gameObject.tag == "smallcoin") {
+            smallCo.Play();
+        }
+        if (collision.gameObject.tag == "bigCoin") {
+            bigCo.Play();
+        }
+        if (collision.tag == "Checkpoint") {
+            respawnPosition = transform.position;
         }
     }
+   
+    public void Die() {
 
-    /*public void Die() {
-         dead = true;
-       //  animator.Play("death");
-              GetComponentInChildren<Collider2D>().enabled = false;
-         rb.velocity = Vector2.up * 5f;
-          gm.lives--;
-     }*/
+        //  animator.Play("death");
+        // GetComponentInChildren<Collider2D>().enabled = false;
+       
+
+        gm.lives--;
+        hits = 1;
+    }
     public void Buttslump() {
 
 
@@ -275,40 +286,56 @@ public class PlayerMover : MonoBehaviour {
     }
 
     public void Momentum() {
-        if (canMove ) {
+        if (canMove) {
             float HorizotalMov = Input.GetAxis("Horizontal");
 
             print("slow down");
 
-            
-            rb.velocity = new Vector3(HorizotalMov  * 0.3f * Time.deltaTime, rb.velocity.y);
+
+            rb.velocity = new Vector3(HorizotalMov * 0.3f * Time.deltaTime, rb.velocity.y);
 
         }
     }
- 
+
     public void SetMarioState() {
 
 
         if (hits == 1) {
-             Small(); 
+            Small();
         }
 
-        if(hits == 2) {
+        if (hits == 2) {
             Big();
         }
         if (hits == 3) {
             FireMario();
         }
 
-      
+
     }
-    
+    private IEnumerator Invulnerability() {
+
+        Physics2D.IgnoreLayerCollision(3, 7, true);
+        for (int i = 0; i < numberOfFlashes; i++) {
+
+            bigSprite.color = new Color(1, 0, 0, 0.5f);
+            smallSprite.color = new Color(1, 0, 0, 0.5f);
+            FireSprite.color = new Color(1, 0, 0, 0.5f);
+            yield return new WaitForSeconds(iFramesDuration / (numberOfFlashes) * 2);
+            bigSprite.color = Color.white;
+            smallSprite.color = Color.white;
+            FireSprite.color = Color.white;
+            yield return new WaitForSeconds(iFramesDuration / (numberOfFlashes) * 2);
+        }
+
+        Physics2D.IgnoreLayerCollision(3, 7, false);
+    }
 
 
     void StompJump() {
-        rb.AddForce(Vector2.up * jumpVelocity/2, ForceMode2D.Impulse);
+        rb.AddForce(Vector2.up * jumpVelocity / 2, ForceMode2D.Impulse);
     }
-          
+
 }
 
 
