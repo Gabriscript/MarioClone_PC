@@ -30,7 +30,6 @@ public class Fireball : MonoBehaviour
         }
        
         
-        //  Vector2 mov = new Vector2(speed, Mathf.Sin(speedUpDown * Time.time) * distanceUpDown);
         
     }
 

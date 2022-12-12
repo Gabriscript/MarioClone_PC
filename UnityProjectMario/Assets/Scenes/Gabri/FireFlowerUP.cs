@@ -2,17 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FireFlowerUP : MonoBehaviour
-{
+public class FireFlowerUP : MonoBehaviour {
+    PlayerMover playerMover;
+    private void Start() {
+        playerMover = FindObjectOfType<PlayerMover>();
+    }
     public void OnTriggerEnter2D(Collider2D collision) {
-        if(collision.tag == "Player") {
-            GameObject player = collision.gameObject;
-            PlayerMover playerMover = player.GetComponent<PlayerMover>();
-
-            if (playerMover) {
+        if (collision.gameObject.layer == 3) {
+            
+                       
                 playerMover.hits = 3;
                 Destroy(gameObject);
-            }
+            
         }
     }
 }
