@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 3364978473831016967}
   m_Layer: 7
   m_Name: VioletSnail
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -85,11 +85,15 @@ MonoBehaviour:
   platform:
     serializedVersion: 2
     m_Bits: 64
+  player:
+    serializedVersion: 2
+    m_Bits: 0
   turnCollision:
     serializedVersion: 2
     m_Bits: 192
   timer: 0
   enemyAnimation: {fileID: 3364978473885648937}
+  shell: {fileID: 0}
 --- !u!50 &3364978473831016966
 Rigidbody2D:
   serializedVersion: 4

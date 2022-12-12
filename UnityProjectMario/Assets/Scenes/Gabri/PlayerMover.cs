@@ -23,7 +23,7 @@ public class PlayerMover : MonoBehaviour {
     bool canMove = true;
     bool onWall = false;
     bool buttSlumpPressed = false;
-    public float deathFromFallingY;
+    float deathFromFallingY;
     bool dead;
     [SerializeField] Vector2 wallJumpDirection;
     [Range(1, 10)] public float jumpVelocity;

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3206118635531195007}
   m_Layer: 7
   m_Name: OrangeSnail
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -53,11 +53,15 @@ MonoBehaviour:
   platform:
     serializedVersion: 2
     m_Bits: 64
+  player:
+    serializedVersion: 2
+    m_Bits: 0
   turnCollision:
     serializedVersion: 2
     m_Bits: 192
   timer: 0
   enemyAnimation: {fileID: 3206118635619364945}
+  shell: {fileID: 0}
 --- !u!50 &3206118635531195006
 Rigidbody2D:
   serializedVersion: 4
