@@ -13,6 +13,14 @@ public class GridController : MonoBehaviour {
     [SerializeField] Tile oneCoin = null;
     [SerializeField] Tile manyCoins = null;
     [SerializeField] Tile empty = null;
+    [SerializeField] Tile fireFlower = null;
+    [SerializeField] Tile bigMushroom = null;
+    [SerializeField] Tile upMushroom = null;
+    public GameObject fireFlowerPrefab;
+    public GameObject upMushroomPrefab;
+    public GameObject bigMushroomPrefab;
+
+
     Dictionary<Vector3Int, int> coinsSqueezed = new Dictionary<Vector3Int, int>();
     int maxCoins = 5;
 
@@ -58,5 +66,21 @@ public class GridController : MonoBehaviour {
                 map.SetTile(coords, empty);
             }
         }
+        if(tile == upMushroom) {
+            var spawnPosition = grid.GetCellCenterWorld(coords + Vector3Int.up);
+            Instantiate(upMushroomPrefab, spawnPosition, Quaternion.identity);
+            map.SetTile(coords, empty);
+        }
+        if (tile == bigMushroom) {
+            var spawnPosition = grid.GetCellCenterWorld(coords + Vector3Int.up);
+            Instantiate(bigMushroomPrefab, spawnPosition, Quaternion.identity);
+            map.SetTile(coords, empty);
+        }
+        if (tile == fireFlower) {
+            var spawnPosition = grid.GetCellCenterWorld(coords + Vector3Int.up);
+            Instantiate(fireFlowerPrefab, spawnPosition, Quaternion.identity);
+            map.SetTile(coords, empty);
+        }
+
     } 
 }
