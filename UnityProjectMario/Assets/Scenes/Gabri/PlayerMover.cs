@@ -23,6 +23,7 @@ public class PlayerMover : MonoBehaviour {
     bool canMove = true;
     bool onWall = false;
     bool buttSlumpPressed = false;
+    bool crouchPressed = false;
     public float deathFromFallingY;
     bool dead;
     [SerializeField] Vector2 wallJumpDirection;
@@ -31,6 +32,7 @@ public class PlayerMover : MonoBehaviour {
     SpriteRenderer smallSprite;
     SpriteRenderer FireSprite;
     private Vector3 respawnPosition;
+    
 
 
     [Header("change status")]
@@ -57,7 +59,7 @@ public class PlayerMover : MonoBehaviour {
 
 
     [Header("Audio info")]
-
+    [SerializeField] private AudioSource Maintheme;
     [SerializeField] private AudioSource FireballSound;
     [SerializeField] private AudioSource jumpSound;
     [SerializeField] private AudioSource walljump;
@@ -92,14 +94,18 @@ public class PlayerMover : MonoBehaviour {
             Buttslump();
             buttSlumpPressed = false;
         }
-        /*if (momentumPressed) {
+       if (momentumPressed) {
             Momentum();
             momentumPressed = false;
-        }*/
+        }
         if (wallhangPressed) {
             WallHanging();
             wallhangPressed = false;
 
+        }
+        if (crouchPressed) {
+            Crouch();
+            crouchPressed = false;
         }
         if (canMove) {
             Move();
@@ -121,14 +127,14 @@ public class PlayerMover : MonoBehaviour {
 
         CollisionCheck();
         //Abl to shoot
-        //if (hits == 3) {
+        if (hits == 3) {
             if (Input.GetKeyDown(KeyCode.E)) {
                 if (fireList.Count < 2) {
                     Shoot();
                     FireballSound.Play();
                 }
             }
-      //  }
+       }
 
 
         Rush();
@@ -137,13 +143,18 @@ public class PlayerMover : MonoBehaviour {
             jumpPressed = true;
 
         }
-        if (Input.GetKeyDown(KeyCode.X)) { //if (rb.velocity.x != 0f)
-            Momentum();
-            //momentumPressed = true;
+        if (grounded == true) {
+            if (Input.GetKeyDown(KeyCode.S) && Input.GetAxis("Horizontal") == 0) {
+               
+                   
+                momentumPressed = true;
+            } else if (Input.GetKeyDown(KeyCode.S)) {
+                crouchPressed = true;
+            }
         }
         //CHECK TO BE ABLE TO WALLJUMP
         if (onWall == true && grounded == false) {
-            if (!facingRight && Input.GetAxisRaw("Horizontal") > 0 || (facingRight && Input.GetAxisRaw("Horizontal") < 0)) {
+            if (facingRight && Input.GetAxis("Horizontal") > 0 || (!facingRight && Input.GetAxis("Horizontal") < 0)) {
 
                 wallhangPressed = true;
             }
@@ -153,6 +164,7 @@ public class PlayerMover : MonoBehaviour {
             canMove = true;
 
         if(gm.lives == 0) {
+            Maintheme.Stop();
             loose.Play();
             Invoke("CallGameOver", 5);
         }
@@ -281,6 +293,7 @@ public class PlayerMover : MonoBehaviour {
             respawnPosition = transform.position;
         }
         if (collision.tag == "EndPoint") {
+            Maintheme.Stop();
             victory.Play();
             Invoke("CallGameOver", 10f);
           //  FindObjectOfType<GameOverscript>().GameOver();
@@ -295,6 +308,7 @@ public class PlayerMover : MonoBehaviour {
 
         gm.lives--;
         hits = 1;
+       gm.UpdateLivesText();
     }
     public void Buttslump() {
 
@@ -304,15 +318,19 @@ public class PlayerMover : MonoBehaviour {
     }
 
     public void Momentum() {
-        if (canMove) {
-            float HorizotalMov = Input.GetAxis("Horizontal");
-
+       
+          
+        //play animatioin
             print("slow down");
+        speed *= 0.9f * Time.deltaTime;
 
+          
 
-            rb.velocity = new Vector3(HorizotalMov * 0.3f * Time.deltaTime, rb.velocity.y);
-
-        }
+        
+    }
+    public void Crouch() {
+        //Play animation
+        speed /= 2;
     }
 
     public void SetMarioState() {

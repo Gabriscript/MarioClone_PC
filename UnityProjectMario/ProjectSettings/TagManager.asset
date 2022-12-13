@@ -10,6 +10,7 @@ TagManager:
   - smallcoin
   - bigCoin
   - Checkpoint
+  - EndPoint
   layers:
   - Default
   - TransparentFX
