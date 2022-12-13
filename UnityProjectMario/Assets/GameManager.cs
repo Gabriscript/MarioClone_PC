@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class GameManager : MonoBehaviour
 {
     PlayerMover Player;
@@ -10,6 +11,7 @@ public class GameManager : MonoBehaviour
     public int lives = 2;
     public int score;
     public int bigCoins;
+   
 
     // Start is called before the first frame update
     void Start()
@@ -38,7 +40,7 @@ public class GameManager : MonoBehaviour
     //score
     //coins collected
     //big coins collected
-
    
+  
    
 }

@@ -64,6 +64,8 @@ public class PlayerMover : MonoBehaviour {
     [SerializeField] private AudioSource death;
     [SerializeField] private AudioSource smallCo;
     [SerializeField] private AudioSource bigCo;
+    [SerializeField] private AudioSource victory;
+    [SerializeField] private AudioSource loose;
 
 
 
@@ -103,11 +105,13 @@ public class PlayerMover : MonoBehaviour {
             Move();
         }
         if (hits <= 0 || transform.position.y < this.deathFromFallingY) {
+
             Die();
             transform.position = respawnPosition;
 
 
         }
+        
     }
 
 
@@ -148,7 +152,10 @@ public class PlayerMover : MonoBehaviour {
         if (grounded)
             canMove = true;
 
-
+        if(gm.lives == 0) {
+            loose.Play();
+            Invoke("CallGameOver", 5);
+        }
 
 
         /* anim.SetBool("", buttSlumpPressed);
@@ -170,6 +177,11 @@ public class PlayerMover : MonoBehaviour {
         bigSprite.flipX = !facingRight;
         smallSprite.flipX = !facingRight;
         FireSprite.flipX = !facingRight;
+
+
+    }
+    public void CallGameOver() {
+        FindObjectOfType<GameOverscript>().GameOver();
     }
 
     private void CollisionCheck() {
@@ -252,6 +264,7 @@ public class PlayerMover : MonoBehaviour {
             jumpSound.Play();
         }
 
+
     }
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.tag == "Enemy") {
@@ -266,6 +279,11 @@ public class PlayerMover : MonoBehaviour {
         }
         if (collision.tag == "Checkpoint") {
             respawnPosition = transform.position;
+        }
+        if (collision.tag == "EndPoint") {
+            victory.Play();
+            Invoke("CallGameOver", 10f);
+          //  FindObjectOfType<GameOverscript>().GameOver();
         }
     }
    
