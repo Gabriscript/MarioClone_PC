@@ -23,7 +23,7 @@ public class PlayerMover : MonoBehaviour {
     bool canMove = true;
     bool onWall = false;
     bool buttSlumpPressed = false;
-    float deathFromFallingY;
+    public float deathFromFallingY;
     bool dead;
     [SerializeField] Vector2 wallJumpDirection;
     [Range(1, 10)] public float jumpVelocity;
@@ -121,18 +121,18 @@ public class PlayerMover : MonoBehaviour {
 
         CollisionCheck();
         //Abl to shoot
-        if (hits == 3) {
+        //if (hits == 3) {
             if (Input.GetKeyDown(KeyCode.E)) {
                 if (fireList.Count < 2) {
                     Shoot();
                     FireballSound.Play();
                 }
             }
-        }
+      //  }
 
 
         Rush();
-        if (Input.GetKeyDown(KeyCode.X)) { if (grounded == false) { buttSlumpPressed = true; } }
+        if (Input.GetKeyDown(KeyCode.S)) { if (grounded == false) { buttSlumpPressed = true; } }
         if (Input.GetKeyDown(KeyCode.Space)) {
             jumpPressed = true;
 
@@ -181,7 +181,7 @@ public class PlayerMover : MonoBehaviour {
 
     }
     public void CallGameOver() {
-        FindObjectOfType<GameOverscript>().GameOver();
+       FindObjectOfType<GameOverscript>().GameOver();
     }
 
     private void CollisionCheck() {

@@ -6,15 +6,15 @@ public class Fireball : MonoBehaviour
 {
     public Vector2 velocity;
 
-    public PlayerMover pm;
+     public  PlayerMover pm;
     public GameObject  fireball ;
-    public  Rigidbody2D rb;
+      Rigidbody2D rb;
     
     float ticktime = 5;
     float timer = 0;
     private void Start() {
         rb = GetComponent<Rigidbody2D>();
-      
+       
         rb.velocity = velocity;
     }
     void Update() {
