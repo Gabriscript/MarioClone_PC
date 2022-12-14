@@ -279,7 +279,7 @@ MonoBehaviour:
   frogNear: 0
   frog:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
 --- !u!1 &7771195932334717631
 GameObject:
   m_ObjectHideFlags: 0
