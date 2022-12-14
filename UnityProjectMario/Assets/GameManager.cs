@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour {
     PlayerMover Player;
     [SerializeField] TextMeshProUGUI livesText;
     [SerializeField] TextMeshProUGUI scoreText;
+    [SerializeField] TextMeshProUGUI coinText;
     public int coins;
     public int lives = 2;
     public int score;
@@ -55,10 +56,25 @@ public class GameManager : MonoBehaviour {
     public void UpdateScoreText() {
 
         string update = "Score :" + score;
-        if (lives <= 0) {
+        if (score <= 0) {
             update = "";
         }
         scoreText.text = update;
+
+    }
+    public void UpdateCoinText() {
+
+        string update = "Coin :" + coins;
+        if (coins <= 0) {
+            update = "";
+        }
+        if (coins == 100) {
+            lives++;
+            UpdateLivesText();
+            coins = 0;
+            update = "";
+        }
+        coinText.text = update;
 
     }
 }

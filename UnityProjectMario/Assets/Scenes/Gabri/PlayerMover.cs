@@ -41,7 +41,7 @@ public class PlayerMover : MonoBehaviour {
     public GameObject FireMan;
     public GameObject fireball;
     public Transform Firestart;
-    public Animator anim;
+  //  public Animator anim;
     public float fireDistance = 1f;
 
 
@@ -67,7 +67,7 @@ public class PlayerMover : MonoBehaviour {
     [SerializeField] private AudioSource smallCo;
     [SerializeField] private AudioSource bigCo;
     [SerializeField] private AudioSource victory;
-    [SerializeField] private AudioSource loose;
+   
 
 
 
@@ -112,7 +112,7 @@ public class PlayerMover : MonoBehaviour {
         }
         if (hits <= 0 || transform.position.y < this.deathFromFallingY) {
 
-            Die();
+           Die();
             transform.position = respawnPosition;
 
 
@@ -163,9 +163,10 @@ public class PlayerMover : MonoBehaviour {
         if (grounded)
             canMove = true;
 
-        if(gm.lives == 0) {
+
+        if(gm.lives == 0) { 
             Maintheme.Stop();
-            loose.Play();
+            death.Play();
             Invoke("CallGameOver", 5);
         }
 
@@ -174,7 +175,7 @@ public class PlayerMover : MonoBehaviour {
          anim.SetBool("", jumpPressed);
          anim.SetBool("", wallhangPressed);*/
 
-
+        //anim.SetFloat("Speed", Math.Abs(Input.GetAxis("Horizontal")));
 
         if (Input.GetAxis("Horizontal") < -0.1f) {
             facingRight = false;
@@ -196,11 +197,11 @@ public class PlayerMover : MonoBehaviour {
        FindObjectOfType<GameOverscript>().GameOver();
     }
 
-    private void CollisionCheck() {
+    public void CollisionCheck() {
         grounded = Physics2D.OverlapCircle(groundCheckPoint.position, .2f, Platform);
         onWall = Physics2D.OverlapCircle(wallGrabPoint.position, .2f, Wall);
     }
-    private void Move() {
+    public void Move() {
 
         float HorizotalMov = Input.GetAxis("Horizontal");
         rb.velocity = new Vector2(HorizotalMov * speed, rb.velocity.y);
@@ -300,7 +301,7 @@ public class PlayerMover : MonoBehaviour {
         }
     }
    
-    public void Die() {
+   public void Die() {
 
         //  animator.Play("death");
         // GetComponentInChildren<Collider2D>().enabled = false;
@@ -308,7 +309,7 @@ public class PlayerMover : MonoBehaviour {
 
         gm.lives--;
         hits = 1;
-       gm.UpdateLivesText();
+      // gm.UpdateLivesText();
     }
     public void Buttslump() {
 
