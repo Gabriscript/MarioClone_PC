@@ -8,7 +8,7 @@ public class Fireball : MonoBehaviour
 
      public  PlayerMover pm;
     public GameObject  fireball ;
-      Rigidbody2D rb;
+      public  Rigidbody2D rb;
     
     float ticktime = 5;
     float timer = 0;
@@ -32,13 +32,17 @@ public class Fireball : MonoBehaviour
         
         
     }
-
+    private void OnTriggerEnter2D(Collider2D collision) {
+        if (collision.gameObject.tag == "Enemy") { Destroy(collision.gameObject); Destroy(gameObject); pm.fireList.Remove(gameObject); Destroy(collision.gameObject); }
+    }
+      
    
+
     private void OnCollisionEnter2D(Collision2D collision) {
         //Explode();
        rb.velocity = new Vector2(velocity.x, -velocity.y);
-
-        if (collision.gameObject.tag == "Enemy") { Destroy(collision.gameObject); Destroy(gameObject); pm.fireList.Remove(gameObject);Destroy(collision.gameObject); }
+        
+      
       //  if (collision.gameObject.tag == "Wall") { Destroy(gameObject); pm.fireList.Remove(gameObject); }
      if (collision.contacts[0].normal.x != 0) {
             pm.fireList.Remove(gameObject);

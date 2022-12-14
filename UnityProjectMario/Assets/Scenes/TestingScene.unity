@@ -566,7 +566,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 641065607}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -31.070967, y: 1.2113426, z: -8.46}
+  m_LocalPosition: {x: -30.081377, y: 1.2113426, z: -8.46}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -683,7 +683,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 740029349}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -31.070967, y: 1.2113426, z: -8.46}
+  m_LocalPosition: {x: -30.081377, y: 1.2113426, z: -8.46}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1172,6 +1172,37 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 1270153706043086370, guid: 1006c051d0a3de944a043021defd26cb, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 1006c051d0a3de944a043021defd26cb, type: 3}
+--- !u!1 &1386708438 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2082203824047045450, guid: 3c945ce0ff6d47a4fb8ce68ff1305c4f, type: 3}
+  m_PrefabInstance: {fileID: 3448214828527226918}
+  m_PrefabAsset: {fileID: 0}
+--- !u!61 &1386708441
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1386708438}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.32, y: 0.32}
+    newSize: {x: 10, y: 10}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.32, y: 0.32}
+  m_EdgeRadius: 0
 --- !u!1 &1419487625
 GameObject:
   m_ObjectHideFlags: 0
@@ -11420,11 +11451,15 @@ PrefabInstance:
     - target: {fileID: 2082203825690226482, guid: 3c945ce0ff6d47a4fb8ce68ff1305c4f, type: 3}
       propertyPath: bigCo
       value: 
-      objectReference: {fileID: 3692947593012199201}
+      objectReference: {fileID: 3692947593012199212}
     - target: {fileID: 2082203825690226482, guid: 3c945ce0ff6d47a4fb8ce68ff1305c4f, type: 3}
       propertyPath: loose
       value: 
       objectReference: {fileID: 3692947593012199203}
+    - target: {fileID: 2082203825690226482, guid: 3c945ce0ff6d47a4fb8ce68ff1305c4f, type: 3}
+      propertyPath: speed
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 2082203825690226482, guid: 3c945ce0ff6d47a4fb8ce68ff1305c4f, type: 3}
       propertyPath: smallCo
       value: 
@@ -11503,11 +11538,6 @@ AudioSource:
   m_CorrespondingSourceObject: {fileID: 2503892283229048308, guid: 3c945ce0ff6d47a4fb8ce68ff1305c4f, type: 3}
   m_PrefabInstance: {fileID: 3448214828527226918}
   m_PrefabAsset: {fileID: 0}
---- !u!82 &3692947593012199201 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 8160282597024000593, guid: 3c945ce0ff6d47a4fb8ce68ff1305c4f, type: 3}
-  m_PrefabInstance: {fileID: 3448214828527226918}
-  m_PrefabAsset: {fileID: 0}
 --- !u!82 &3692947593012199202 stripped
 AudioSource:
   m_CorrespondingSourceObject: {fileID: 7070144019541251121, guid: 3c945ce0ff6d47a4fb8ce68ff1305c4f, type: 3}
@@ -11543,3 +11573,8 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!82 &3692947593012199212 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 4428348030101184895, guid: 3c945ce0ff6d47a4fb8ce68ff1305c4f, type: 3}
+  m_PrefabInstance: {fileID: 3448214828527226918}
+  m_PrefabAsset: {fileID: 0}

@@ -14,7 +14,7 @@ public class PlayerMover : MonoBehaviour {
     GameManager gm;
     Rigidbody2D rb;
     [Header("Move info")]
-    public float speed = 20f;
+    public float speed = 10f;
     bool wallhangPressed = false;
     bool jumpPressed = false;
     bool momentumPressed = false;
@@ -24,7 +24,7 @@ public class PlayerMover : MonoBehaviour {
     bool onWall = false;
     bool buttSlumpPressed = false;
     bool crouchPressed = false;
-    public float deathFromFallingY;
+    public float deathFromFallingY = -10;
     bool dead;
     [SerializeField] Vector2 wallJumpDirection;
     [Range(1, 10)] public float jumpVelocity;
@@ -32,7 +32,8 @@ public class PlayerMover : MonoBehaviour {
     SpriteRenderer smallSprite;
     SpriteRenderer FireSprite;
     private Vector3 respawnPosition;
-    
+    bool rushPressed =false;
+   
 
 
     [Header("change status")]
@@ -81,6 +82,7 @@ public class PlayerMover : MonoBehaviour {
         bigSprite = transform.Find("Mario_1").GetComponent<SpriteRenderer>();
         smallSprite = transform.Find("MarioMini").GetComponent<SpriteRenderer>();
         FireSprite = transform.Find("FireMan").GetComponent<SpriteRenderer>();
+        
     }
 
     private void FixedUpdate() {
@@ -103,10 +105,17 @@ public class PlayerMover : MonoBehaviour {
             wallhangPressed = false;
 
         }
-        if (crouchPressed) {
-            Crouch();
-            crouchPressed = false;
+        if (rushPressed) {
+            Rush();
+            
+            rushPressed = false;
+            
+
         }
+        if (crouchPressed) {
+             Crouch();
+             crouchPressed = false;
+         }
         if (canMove) {
             Move();
         }
@@ -114,7 +123,7 @@ public class PlayerMover : MonoBehaviour {
 
            Die();
             transform.position = respawnPosition;
-
+            
 
         }
         
@@ -122,8 +131,15 @@ public class PlayerMover : MonoBehaviour {
 
 
     void Update() {
+       
+       
 
-        SetMarioState();
+        if (Input.GetKey(KeyCode.E)) {
+            rushPressed = true;
+        } else {
+            speed = 20;
+        }
+            SetMarioState();
 
         CollisionCheck();
         //Abl to shoot
@@ -137,21 +153,22 @@ public class PlayerMover : MonoBehaviour {
        }
 
 
-        Rush();
-        if (Input.GetKeyDown(KeyCode.S)) { if (grounded == false) { buttSlumpPressed = true; } }
+       
+        if (Input.GetKeyDown(KeyCode.X)) { if (grounded == false) { buttSlumpPressed = true; } }
         if (Input.GetKeyDown(KeyCode.Space)) {
             jumpPressed = true;
 
         }
-        if (grounded == true) {
-            if (Input.GetKeyDown(KeyCode.S) && Input.GetAxis("Horizontal") == 0) {
-               
-                   
-                momentumPressed = true;
-            } else if (Input.GetKeyDown(KeyCode.S)) {
-                crouchPressed = true;
-            }
-        }
+        //if (grounded == true) {
+        //   if (Input.GetKeyDown(KeyCode.S) && Input.GetAxis("Horizontal") == 0) {
+        if (Input.GetKey(KeyCode.X)) {  crouchPressed = true; } else { speed = 20; } 
+
+        //   momentumPressed = true;
+        //   } /*else if (Input.GetKeyDown(KeyCode.S)) {
+        //  crouchPressed = true;
+        //    }*/
+        //}
+
         //CHECK TO BE ABLE TO WALLJUMP
         if (onWall == true && grounded == false) {
             if (facingRight && Input.GetAxis("Horizontal") > 0 || (!facingRight && Input.GetAxis("Horizontal") < 0)) {
@@ -242,12 +259,13 @@ public class PlayerMover : MonoBehaviour {
     }
 
     public void Rush() {
-        float HorizotalMov = Input.GetAxis("Horizontal");
-        if (Input.GetKey(KeyCode.E)) {
-            var rush = speed * 2;
-            rb.velocity = new Vector2(HorizotalMov * rush, rb.velocity.y);
+        //float HorizotalMov = Input.GetAxis("Horizontal");
 
-        }
+        speed *= 2;
+        
+        print("rush");
+        
+        
 
     }
 
@@ -330,8 +348,10 @@ public class PlayerMover : MonoBehaviour {
         
     }
     public void Crouch() {
-        //Play animation
-        speed /= 2;
+
+        speed /=2 ;
+            print("crouch");
+        
     }
 
     public void SetMarioState() {
