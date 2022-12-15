@@ -37,7 +37,7 @@ public class EnemyMovement : MonoBehaviour {
         feetSize = new Vector3(enemySize.x, groundCheckDepth);
         rayAngleRight = new Vector2(5, -1).normalized;
         rayAngleLeft = new Vector2(-5, -1).normalized;
-        stompCollider = new Vector2(enemySize.x, 0.25f);
+        stompCollider = new Vector2(enemySize.x, 0.5f);
 
         //randomize layer
         int order;
@@ -109,7 +109,7 @@ public class EnemyMovement : MonoBehaviour {
         }
 
         //death by stomp
-        var stomp = Physics2D.OverlapBox(transform.position + Vector3.up * enemySize.y * 0.25f, stompCollider, 0, player);
+        var stomp = Physics2D.OverlapBox(transform.position + Vector3.up * enemySize.y * 1f, stompCollider, 0, player);
 
         if (stomp == true) {
             if (enemyType == enemyCat.Goompa) {
