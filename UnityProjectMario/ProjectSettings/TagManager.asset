@@ -11,6 +11,7 @@ TagManager:
   - bigCoin
   - Checkpoint
   - EndPoint
+  - Brick
   layers:
   - Default
   - TransparentFX
