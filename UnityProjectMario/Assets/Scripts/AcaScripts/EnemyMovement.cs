@@ -114,12 +114,12 @@ public class EnemyMovement : MonoBehaviour {
         if (stomp == true) {
             if (enemyType == enemyCat.Goompa) {
                 Destroy(gameObject);
-                //function to make mario hop a little
+                FindObjectOfType<PlayerMover>().StompJump();
             } else {
                 if (enemyType == enemyCat.RedKoopa || enemyType == enemyCat.Koopa) {
                     Destroy(gameObject);
                     Instantiate(shell, transform.position, transform.rotation);
-                    //function to make mario hop a little
+                    FindObjectOfType<PlayerMover>().StompJump();
                 }
             }
         }

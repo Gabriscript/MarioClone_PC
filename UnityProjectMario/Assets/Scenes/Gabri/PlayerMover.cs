@@ -389,7 +389,7 @@ public class PlayerMover : MonoBehaviour {
     }
 
 
-    void StompJump() {
+   public  void StompJump() {
         rb.AddForce(Vector2.up * jumpVelocity / 2, ForceMode2D.Impulse);
     }
 
