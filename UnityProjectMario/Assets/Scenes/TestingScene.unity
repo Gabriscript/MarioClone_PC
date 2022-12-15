@@ -1228,6 +1228,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1006c051d0a3de944a043021defd26cb, type: 3}
+--- !u!1 &1211752922 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2082203825307632458, guid: 3c945ce0ff6d47a4fb8ce68ff1305c4f, type: 3}
+  m_PrefabInstance: {fileID: 3448214828527226918}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1211752924
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1211752922}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c44218cb7c9e24843bfaa6ca975cd302, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1419487625
 GameObject:
   m_ObjectHideFlags: 0
@@ -11472,7 +11497,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2082203824047045450, guid: 3c945ce0ff6d47a4fb8ce68ff1305c4f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2082203824789210241, guid: 3c945ce0ff6d47a4fb8ce68ff1305c4f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -11496,7 +11521,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2082203825307632458, guid: 3c945ce0ff6d47a4fb8ce68ff1305c4f, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2082203825307632463, guid: 3c945ce0ff6d47a4fb8ce68ff1305c4f, type: 3}
       propertyPath: m_Size.x
@@ -11571,6 +11596,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2082203825690226482, guid: 3c945ce0ff6d47a4fb8ce68ff1305c4f, type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 1211752924}
+    - target: {fileID: 2082203825690226482, guid: 3c945ce0ff6d47a4fb8ce68ff1305c4f, type: 3}
       propertyPath: bigCo
       value: 
       objectReference: {fileID: 3692947593012199212}
@@ -11594,6 +11623,10 @@ PrefabInstance:
       propertyPath: Maintheme
       value: 
       objectReference: {fileID: 3692947593012199210}
+    - target: {fileID: 2082203825690226482, guid: 3c945ce0ff6d47a4fb8ce68ff1305c4f, type: 3}
+      propertyPath: animMario_1
+      value: 
+      objectReference: {fileID: 1211752924}
     - target: {fileID: 2082203825690226482, guid: 3c945ce0ff6d47a4fb8ce68ff1305c4f, type: 3}
       propertyPath: iFramesDuration
       value: 1
@@ -11649,11 +11682,6 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 2082203825690226486, guid: 3c945ce0ff6d47a4fb8ce68ff1305c4f, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 3c945ce0ff6d47a4fb8ce68ff1305c4f, type: 3}
---- !u!1 &3448214828527226919 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2082203825690226510, guid: 3c945ce0ff6d47a4fb8ce68ff1305c4f, type: 3}
-  m_PrefabInstance: {fileID: 3448214828527226918}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3692947593012199190 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2082203825690226480, guid: 3c945ce0ff6d47a4fb8ce68ff1305c4f, type: 3}
@@ -11679,26 +11707,6 @@ AudioSource:
   m_CorrespondingSourceObject: {fileID: 3448214827808396571, guid: 3c945ce0ff6d47a4fb8ce68ff1305c4f, type: 3}
   m_PrefabInstance: {fileID: 3448214828527226918}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &3692947593012199211
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3448214828527226919}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c44218cb7c9e24843bfaa6ca975cd302, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!82 &3692947593012199212 stripped
 AudioSource:
   m_CorrespondingSourceObject: {fileID: 4428348030101184895, guid: 3c945ce0ff6d47a4fb8ce68ff1305c4f, type: 3}

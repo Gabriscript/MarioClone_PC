@@ -42,7 +42,7 @@ public class PlayerMover : MonoBehaviour {
     public GameObject FireMan;
     public GameObject fireball;
     public Transform Firestart;
-    //  public Animator anim;
+     public Animator animMario_1;
     public float fireDistance = 1f;
 
 
@@ -203,7 +203,7 @@ public class PlayerMover : MonoBehaviour {
         } else if (Input.GetAxis("Horizontal") > 0.1f) {
             facingRight = true;
         }
-
+        animMario_1.SetFloat("Speed", MathF.Abs(Input.GetAxis("Horizontal")));
         Firestart.localPosition = Vector3.right * fireDistance * (facingRight ? 1 : -1);
         wallGrabPoint.localPosition = Vector3.right * grabDistance * (facingRight ? 1 : -1);
 
