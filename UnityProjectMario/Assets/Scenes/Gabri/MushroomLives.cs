@@ -13,8 +13,8 @@ public class MushroomLives : MonoBehaviour {
     public void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.layer == 3) {
 
-            gm.lives++;
-            gm.UpdateLivesText();
+          //  gm.lives++;
+          //  gm.UpdateLivesText();
             Destroy(gameObject);
         }
 

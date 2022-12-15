@@ -285,7 +285,7 @@ public class PlayerMover : MonoBehaviour {
         if (wallhangPressed) {
             {
 
-                rb.velocity = new Vector2(-Input.GetAxisRaw("Horizontal") * 20, 20);
+                rb.velocity = new Vector2(-Input.GetAxisRaw("Horizontal") * wallJumpDirection.x, wallJumpDirection.y);
                 walljump.Play();
                 canMove = false;
 
