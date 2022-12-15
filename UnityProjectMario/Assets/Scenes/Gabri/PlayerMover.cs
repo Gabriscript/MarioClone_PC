@@ -32,8 +32,8 @@ public class PlayerMover : MonoBehaviour {
     SpriteRenderer smallSprite;
     SpriteRenderer FireSprite;
     private Vector3 respawnPosition;
-    bool rushPressed =false;
-   
+    bool rushPressed = false;
+
 
 
     [Header("change status")]
@@ -42,7 +42,7 @@ public class PlayerMover : MonoBehaviour {
     public GameObject FireMan;
     public GameObject fireball;
     public Transform Firestart;
-  //  public Animator anim;
+    //  public Animator anim;
     public float fireDistance = 1f;
 
 
@@ -68,7 +68,7 @@ public class PlayerMover : MonoBehaviour {
     [SerializeField] private AudioSource smallCo;
     [SerializeField] private AudioSource bigCo;
     [SerializeField] private AudioSource victory;
-   
+
 
 
 
@@ -82,7 +82,7 @@ public class PlayerMover : MonoBehaviour {
         bigSprite = transform.Find("Mario_1").GetComponent<SpriteRenderer>();
         smallSprite = transform.Find("MarioMini").GetComponent<SpriteRenderer>();
         FireSprite = transform.Find("FireMan").GetComponent<SpriteRenderer>();
-        
+
     }
 
     private void FixedUpdate() {
@@ -96,7 +96,7 @@ public class PlayerMover : MonoBehaviour {
             Buttslump();
             buttSlumpPressed = false;
         }
-       if (momentumPressed) {
+        if (momentumPressed) {
             Momentum();
             momentumPressed = false;
         }
@@ -107,39 +107,40 @@ public class PlayerMover : MonoBehaviour {
         }
         if (rushPressed) {
             Rush();
-            
+
             rushPressed = false;
-            
+
 
         }
         if (crouchPressed) {
-             Crouch();
-             crouchPressed = false;
-         }
+            Crouch();
+            crouchPressed = false;
+            canMove = true;
+        }
         if (canMove) {
             Move();
         }
         if (hits <= 0 || transform.position.y < this.deathFromFallingY) {
 
-           Die();
+            Die();
             transform.position = respawnPosition;
-            
+
 
         }
-        
+
     }
 
 
     void Update() {
-       
-       
+
+
 
         if (Input.GetKey(KeyCode.E)) {
             rushPressed = true;
         } else {
-            speed = 20;
+            speed = 7;
         }
-            SetMarioState();
+        SetMarioState();
 
         CollisionCheck();
         //Abl to shoot
@@ -150,10 +151,10 @@ public class PlayerMover : MonoBehaviour {
                     FireballSound.Play();
                 }
             }
-       }
+        }
 
 
-       
+
         if (Input.GetKeyDown(KeyCode.X)) { if (grounded == false) { buttSlumpPressed = true; } }
         if (Input.GetKeyDown(KeyCode.Space)) {
             jumpPressed = true;
@@ -161,7 +162,10 @@ public class PlayerMover : MonoBehaviour {
         }
         //if (grounded == true) {
         //   if (Input.GetKeyDown(KeyCode.S) && Input.GetAxis("Horizontal") == 0) {
-        if (Input.GetKey(KeyCode.X)) {  crouchPressed = true; } else { speed = 20; } 
+        if (Input.GetKey(KeyCode.X)) {
+            canMove = false;
+            crouchPressed = true;
+        } else { speed = 7; }
 
         //   momentumPressed = true;
         //   } /*else if (Input.GetKeyDown(KeyCode.S)) {
@@ -181,7 +185,7 @@ public class PlayerMover : MonoBehaviour {
             canMove = true;
 
 
-        if(gm.lives == 0) { 
+        if (gm.lives == 0) {
             Maintheme.Stop();
             death.Play();
             Invoke("CallGameOver", 5);
@@ -211,7 +215,7 @@ public class PlayerMover : MonoBehaviour {
 
     }
     public void CallGameOver() {
-       FindObjectOfType<GameOverscript>().GameOver();
+        FindObjectOfType<GameOverscript>().GameOver();
     }
 
     public void CollisionCheck() {
@@ -261,11 +265,11 @@ public class PlayerMover : MonoBehaviour {
     public void Rush() {
         //float HorizotalMov = Input.GetAxis("Horizontal");
 
-        speed *= 2;
-        
+        speed *= 1.5f;
+
         print("rush");
-        
-        
+
+
 
     }
 
@@ -315,19 +319,19 @@ public class PlayerMover : MonoBehaviour {
             Maintheme.Stop();
             victory.Play();
             Invoke("CallGameOver", 10f);
-          //  FindObjectOfType<GameOverscript>().GameOver();
+            //  FindObjectOfType<GameOverscript>().GameOver();
         }
     }
-   
-   public void Die() {
+
+    public void Die() {
 
         //  animator.Play("death");
         // GetComponentInChildren<Collider2D>().enabled = false;
-       
+
 
         gm.lives--;
         hits = 1;
-      // gm.UpdateLivesText();
+        // gm.UpdateLivesText();
     }
     public void Buttslump() {
 
@@ -337,21 +341,21 @@ public class PlayerMover : MonoBehaviour {
     }
 
     public void Momentum() {
-       
-          
+
+
         //play animatioin
-            print("slow down");
+        print("slow down");
         speed *= 0.9f * Time.deltaTime;
 
-          
 
-        
+
+
     }
     public void Crouch() {
+        speed = 0  ;
+        //playanimation
+        print("crouch");
 
-        speed /=2 ;
-            print("crouch");
-        
     }
 
     public void SetMarioState() {
@@ -389,7 +393,7 @@ public class PlayerMover : MonoBehaviour {
     }
 
 
-   public  void StompJump() {
+    public void StompJump() {
         rb.AddForce(Vector2.up * jumpVelocity / 2, ForceMode2D.Impulse);
     }
 

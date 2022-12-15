@@ -155,8 +155,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hits: 2
-  speed: 20
-  deathFromFallingY: 0
+  speed: 7
+  deathFromFallingY: -10
   wallJumpDirection: {x: 10, y: 20}
   jumpVelocity: 10
   MarioMini: {fileID: 2082203824047045450}
@@ -164,7 +164,7 @@ MonoBehaviour:
   FireMan: {fileID: 8322502590030357332}
   fireball: {fileID: 2469381813445493486, guid: 9986fd78d6522374aa5be0f8f941b86a, type: 3}
   Firestart: {fileID: 2082203824891653383}
-  fireDistance: 1.83
+  fireDistance: 0.7
   Platform:
     serializedVersion: 2
     m_Bits: 64
@@ -174,17 +174,16 @@ MonoBehaviour:
   groundCheckPoint: {fileID: 2082203824789210241}
   wallGrabPoint: {fileID: 2082203824200636269}
   grabDistance: 0.7
-  iFramesDuration: 0
-  numberOfFlashes: 0
-  Maintheme: {fileID: 0}
+  iFramesDuration: 2
+  numberOfFlashes: 3
+  Maintheme: {fileID: 3448214827808396571}
   FireballSound: {fileID: 3448214827808396645}
   jumpSound: {fileID: 3448214827808396644}
   walljump: {fileID: 3448214827808396642}
   death: {fileID: 3448214827808396643}
-  smallCo: {fileID: 0}
+  smallCo: {fileID: 2503892283229048308}
   bigCo: {fileID: 4428348030101184895}
   victory: {fileID: 7070144019541251121}
-  loose: {fileID: 0}
   fireList: []
 --- !u!50 &2082203825690226483
 Rigidbody2D:
@@ -201,7 +200,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 2
   m_Material: {fileID: 6200000, guid: f6a121fa3c3989242b93e42207a4bf92, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1

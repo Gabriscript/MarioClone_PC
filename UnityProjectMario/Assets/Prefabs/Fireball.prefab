@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbb1276cb84933640b64efce0869bcfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocity: {x: 25, y: -10}
+  velocity: {x: 8, y: -7}
   pm: {fileID: 0}
   fireball: {fileID: 2469381813445493486}
   rb: {fileID: 7973371734579592424}
@@ -116,9 +116,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.005731046, y: 0.025786161}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.08455521
 --- !u!50 &7973371734579592424
 Rigidbody2D:
   serializedVersion: 4
