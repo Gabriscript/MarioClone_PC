@@ -5,6 +5,7 @@ using System.Linq;
 using System;
 
 
+
 public class PlayerMover : MonoBehaviour {
 
 
@@ -22,6 +23,7 @@ public class PlayerMover : MonoBehaviour {
     bool grounded;
     bool canMove = true;
     bool onWall = false;
+    bool hitbrick = false;
     bool buttSlumpPressed = false;
     bool crouchPressed = false;
     public float deathFromFallingY = -10;
@@ -44,13 +46,16 @@ public class PlayerMover : MonoBehaviour {
     public Transform Firestart;
      public Animator animMario_1;
     public float fireDistance = 1f;
+   
 
 
 
     [Header("Collision info")]
     public LayerMask Platform;
     public LayerMask Wall;
+    public LayerMask Brick;
     public Transform groundCheckPoint;
+    public Transform brickCheckPoint;
     public static bool MarioIsSmall = false;
     public Transform wallGrabPoint;
     public float grabDistance = 1f;
@@ -82,34 +87,32 @@ public class PlayerMover : MonoBehaviour {
         bigSprite = transform.Find("Mario_1").GetComponent<SpriteRenderer>();
         smallSprite = transform.Find("MarioMini").GetComponent<SpriteRenderer>();
         FireSprite = transform.Find("FireMan").GetComponent<SpriteRenderer>();
-
+      
     }
 
     private void FixedUpdate() {
         if (jumpPressed) {
             Jump();
-            jumpPressed = false;
+          jumpPressed = false;
+           
 
         }
 
         if (buttSlumpPressed) {
             Buttslump();
-            buttSlumpPressed = false;
+           // buttSlumpPressed = false;
         }
-        if (momentumPressed) {
-            Momentum();
-            momentumPressed = false;
-        }
+       
         if (wallhangPressed) {
             WallHanging();
             wallhangPressed = false;
-
+            
         }
         if (rushPressed) {
             Rush();
 
             rushPressed = false;
-
+            animMario_1.SetBool("Run", false);
 
         }
         if (crouchPressed) {
@@ -137,8 +140,10 @@ public class PlayerMover : MonoBehaviour {
 
         if (Input.GetKey(KeyCode.E)) {
             rushPressed = true;
+            animMario_1.SetBool("Run", true);
         } else {
             speed = 7;
+           
         }
         SetMarioState();
 
@@ -153,36 +158,47 @@ public class PlayerMover : MonoBehaviour {
             }
         }
 
-
+       
 
         if (Input.GetKeyDown(KeyCode.X)) { if (grounded == false) { buttSlumpPressed = true; } }
         if (Input.GetKeyDown(KeyCode.Space)) {
+            animMario_1.SetBool("Jump", true);
             jumpPressed = true;
 
         }
-        //if (grounded == true) {
-        //   if (Input.GetKeyDown(KeyCode.S) && Input.GetAxis("Horizontal") == 0) {
+       
         if (Input.GetKey(KeyCode.X)) {
             canMove = false;
             crouchPressed = true;
         } else { speed = 7; }
 
-        //   momentumPressed = true;
-        //   } /*else if (Input.GetKeyDown(KeyCode.S)) {
-        //  crouchPressed = true;
-        //    }*/
-        //}
+       
 
         //CHECK TO BE ABLE TO WALLJUMP
         if (onWall == true && grounded == false) {
             if (facingRight && Input.GetAxis("Horizontal") > 0 || (!facingRight && Input.GetAxis("Horizontal") < 0)) {
 
                 wallhangPressed = true;
+                animMario_1.SetBool("WallHang", true);
+                animMario_1.SetBool("Jump", false);
             }
         }
         //tO MOVE AFTER WALLJUMP
-        if (grounded)
-            canMove = true;
+        if (grounded) {
+           
+        canMove = true;
+        buttSlumpPressed = false;
+            animMario_1.SetBool("Jump", false);
+            animMario_1.SetBool("WallHang", false);
+
+
+
+        }
+        if (!grounded && !onWall) {
+            animMario_1.SetBool("Jump", true);
+          //  animMario_1.SetBool("WallHang", false);
+
+        }
 
 
         if (gm.lives == 0) {
@@ -203,6 +219,7 @@ public class PlayerMover : MonoBehaviour {
         } else if (Input.GetAxis("Horizontal") > 0.1f) {
             facingRight = true;
         }
+        
         animMario_1.SetFloat("Speed", MathF.Abs(Input.GetAxis("Horizontal")));
         Firestart.localPosition = Vector3.right * fireDistance * (facingRight ? 1 : -1);
         wallGrabPoint.localPosition = Vector3.right * grabDistance * (facingRight ? 1 : -1);
@@ -221,6 +238,7 @@ public class PlayerMover : MonoBehaviour {
     public void CollisionCheck() {
         grounded = Physics2D.OverlapCircle(groundCheckPoint.position, .2f, Platform);
         onWall = Physics2D.OverlapCircle(wallGrabPoint.position, .2f, Wall);
+        hitbrick = Physics2D.OverlapCircle(brickCheckPoint.position, .2f, Brick);
     }
     public void Move() {
 
@@ -262,14 +280,9 @@ public class PlayerMover : MonoBehaviour {
 
     }
 
-    public void Rush() {
-        //float HorizotalMov = Input.GetAxis("Horizontal");
-
+    public void Rush() {       
         speed *= 1.5f;
-
         print("rush");
-
-
 
     }
 
@@ -339,18 +352,8 @@ public class PlayerMover : MonoBehaviour {
         rb.velocity = Vector2.down * speed;
 
     }
-
-    public void Momentum() {
-
-
-        //play animatioin
-        print("slow down");
-        speed *= 0.9f * Time.deltaTime;
-
-
-
-
-    }
+      
+   
     public void Crouch() {
         speed = 0  ;
         //playanimation
