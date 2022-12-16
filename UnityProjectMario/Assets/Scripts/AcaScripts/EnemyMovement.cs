@@ -25,6 +25,7 @@ public class EnemyMovement : MonoBehaviour {
     SpriteRenderer rend;
     Vector2 stompCollider;
     public GameObject shell;
+    PlayerMover pm;
 
     
 
@@ -34,6 +35,7 @@ public class EnemyMovement : MonoBehaviour {
         anim = enemyAnimation.GetComponent<Animator>();
         animSort = GetComponentInChildren<Animator>();
         rend = animSort.GetComponent<SpriteRenderer>();
+        pm = GameObject.FindWithTag("Player").GetComponent<PlayerMover>();
         feetSize = new Vector3(enemySize.x, groundCheckDepth);
         rayAngleRight = new Vector2(5, -1).normalized;
         rayAngleLeft = new Vector2(-5, -1).normalized;
@@ -109,17 +111,17 @@ public class EnemyMovement : MonoBehaviour {
         }
 
         //death by stomp
-        var stomp = Physics2D.OverlapBox(transform.position + Vector3.up * enemySize.y * 1f, stompCollider, 0, player);
+        var stomp = Physics2D.OverlapBox(transform.position + Vector3.up * enemySize.y * 0.25f, stompCollider, 0, player);
 
         if (stomp == true) {
             if (enemyType == enemyCat.Goompa) {
                 Destroy(gameObject);
-                FindObjectOfType<PlayerMover>().StompJump();
+                pm.StompJump();
             } else {
                 if (enemyType == enemyCat.RedKoopa || enemyType == enemyCat.Koopa) {
                     Destroy(gameObject);
                     Instantiate(shell, transform.position, transform.rotation);
-                    FindObjectOfType<PlayerMover>().StompJump();
+                    pm.StompJump();
                 }
             }
         }
