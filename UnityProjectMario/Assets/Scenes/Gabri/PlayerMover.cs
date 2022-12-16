@@ -167,10 +167,10 @@ public class PlayerMover : MonoBehaviour {
 
         }
        
-        if (Input.GetKey(KeyCode.X)) {
+     /*   if (Input.GetKey(KeyCode.X)) {
             canMove = false;
             crouchPressed = true;
-        } else { speed = 7; }
+        } else { speed = 7; }*/
 
        
 
@@ -349,7 +349,7 @@ public class PlayerMover : MonoBehaviour {
     public void Buttslump() {
 
 
-        rb.velocity = Vector2.down * speed;
+        rb.velocity = Vector2.down * speed*2;
 
     }
       
