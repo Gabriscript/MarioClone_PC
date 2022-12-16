@@ -87,7 +87,7 @@ MonoBehaviour:
     m_Bits: 64
   player:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   turnCollision:
     serializedVersion: 2
     m_Bits: 192

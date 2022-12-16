@@ -117,7 +117,7 @@ GameObject:
   - component: {fileID: 6191276560630251234}
   - component: {fileID: 6191276560630251233}
   - component: {fileID: 6191276560630251232}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: UpMushroom
   m_TagString: Untagged
   m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
@@ -160,7 +160,7 @@ MonoBehaviour:
     m_Bits: 64
   player:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   turnCollision:
     serializedVersion: 2
     m_Bits: 64

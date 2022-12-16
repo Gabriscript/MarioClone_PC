@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 1270153706043086370}
   - component: {fileID: 1270153706043086371}
   - component: {fileID: 234298880919307553}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: FireFlower
   m_TagString: Untagged
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
@@ -98,7 +98,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0.37}
