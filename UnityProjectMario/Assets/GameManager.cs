@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour {
     [SerializeField] TextMeshProUGUI scoreText;
     [SerializeField] TextMeshProUGUI coinText;
     public int coins;
-    public int lives = 2;
+    public int lives = 5;
     public int score;
     public int bigCoins;
 

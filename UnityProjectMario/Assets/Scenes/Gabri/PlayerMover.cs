@@ -8,14 +8,15 @@ using System;
 
 public class PlayerMover : MonoBehaviour {
 
-
+    float tickTimer = 2f;
+    float timer = 0f;
     public int hits = 2;
 
     Coins coins;
     GameManager gm;
     Rigidbody2D rb;
     [Header("Move info")]
-    public float speed = 10f;
+    public float speed = 7f;
     bool wallhangPressed = false;
     public bool jumpPressed = false;
     bool momentumPressed = false;
@@ -69,10 +70,11 @@ public class PlayerMover : MonoBehaviour {
     [SerializeField] private AudioSource FireballSound;
     [SerializeField] private AudioSource jumpSound;
     [SerializeField] private AudioSource walljump;
-    [SerializeField] private AudioSource death;
+    [SerializeField] private AudioSource loose;
     [SerializeField] private AudioSource smallCo;
     [SerializeField] private AudioSource bigCo;
     [SerializeField] private AudioSource victory;
+    [SerializeField] private AudioSource die;
 
 
 
@@ -123,9 +125,13 @@ public class PlayerMover : MonoBehaviour {
         if (canMove) {
             Move();
         }
+        
         if (hits <= 0 || transform.position.y < this.deathFromFallingY) {
-
-            Die();
+           
+        
+                Die();
+               
+            
             transform.position = respawnPosition;
 
 
@@ -158,7 +164,9 @@ public class PlayerMover : MonoBehaviour {
             }
         }
 
-       
+       /* if (!grounded) {
+            jumpPressed = true;
+        } else if (grounded){ jumpPressed = !jumpPressed; }*/
 
         if (Input.GetKeyDown(KeyCode.X)) { if (grounded == false) { buttSlumpPressed = true; } }
         if (Input.GetKeyDown(KeyCode.Space)) {
@@ -203,17 +211,12 @@ public class PlayerMover : MonoBehaviour {
 
         if (gm.lives == 0) {
             Maintheme.Stop();
-            death.Play();
-            Invoke("CallGameOver", 5);
+           die.Play();
+            Invoke("CallGameOver", 3);
         }
 
 
-        /* anim.SetBool("", buttSlumpPressed);
-         anim.SetBool("", jumpPressed);
-         anim.SetBool("", wallhangPressed);*/
-
-        //anim.SetFloat("Speed", Math.Abs(Input.GetAxis("Horizontal")));
-
+       
         if (Input.GetAxis("Horizontal") < -0.1f) {
             facingRight = false;
         } else if (Input.GetAxis("Horizontal") > 0.1f) {
@@ -280,8 +283,8 @@ public class PlayerMover : MonoBehaviour {
 
     }
 
-    public void Rush() {       
-        speed *= 1.5f;
+    public void Rush() {
+        speed = 11f;
         print("rush");
 
     }
@@ -331,8 +334,8 @@ public class PlayerMover : MonoBehaviour {
         if (collision.tag == "EndPoint") {
             Maintheme.Stop();
             victory.Play();
-            Invoke("CallGameOver", 10f);
-            //  FindObjectOfType<GameOverscript>().GameOver();
+            Invoke("CallGameOver", 7f);
+            //FindObjectOfType<GameOverscript>().GameOver();
         }
     }
 
@@ -342,9 +345,9 @@ public class PlayerMover : MonoBehaviour {
         // GetComponentInChildren<Collider2D>().enabled = false;
 
 
-        gm.lives--;
+        gm.lives-=1;
         hits = 1;
-        // gm.UpdateLivesText();
+         gm.UpdateLivesText();
     }
     public void Buttslump() {
 

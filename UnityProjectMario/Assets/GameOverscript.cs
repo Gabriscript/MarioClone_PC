@@ -19,7 +19,7 @@ public class GameOverscript : MonoBehaviour
     }
 
    public  void NewGame() {
-        SceneManager.LoadScene("FinalScene");
+        SceneManager.LoadScene("1-1");
         gameOverMenuUI.SetActive(false);
         Time.timeScale = 1f;
         GameIsOver = false;

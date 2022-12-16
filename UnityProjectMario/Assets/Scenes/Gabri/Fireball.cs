@@ -9,12 +9,13 @@ public class Fireball : MonoBehaviour
      public  PlayerMover pm;
     public GameObject  fireball ;
       public  Rigidbody2D rb;
+    EnemyMovement em;
     
     float ticktime = 5;
     float timer = 0;
     private void Start() {
         rb = GetComponent<Rigidbody2D>();
-       
+        em = GameObject.FindGameObjectWithTag("Enemy").GetComponent<EnemyMovement>();
         rb.velocity = velocity;
     }
     void Update() {
@@ -33,6 +34,10 @@ public class Fireball : MonoBehaviour
         
     }
     private void OnTriggerEnter2D(Collider2D collision) {
+        if (collision.gameObject.name == "pirahnaAnim") {
+            var placeholder = collision.gameObject;
+            //Destroy(placeholder.gameObject.parent.gameObject); 
+        }
         if (collision.gameObject.tag == "Enemy") { Destroy(collision.gameObject); Destroy(gameObject); pm.fireList.Remove(gameObject); Destroy(collision.gameObject); }
     }
       
