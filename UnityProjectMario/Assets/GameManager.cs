@@ -31,12 +31,14 @@ public class GameManager : MonoBehaviour {
         coins += 1;
         score += 100;
         UpdateScoreText();
+        UpdateCoinText();
     }
 
     public void BigCoin() {
         bigCoins += 1;
         score += 1000;
         UpdateScoreText();
+        UpdateCoinText();
     }
 
     //time

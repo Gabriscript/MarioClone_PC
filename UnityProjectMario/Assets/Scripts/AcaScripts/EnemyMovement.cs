@@ -111,7 +111,7 @@ public class EnemyMovement : MonoBehaviour {
         }
 
         //death by stomp
-        var stomp = Physics2D.OverlapBox(transform.position + Vector3.up * enemySize.y * 0.25f, stompCollider, 0, player);
+        var stomp = Physics2D.OverlapBox(transform.position + Vector3.up * enemySize.y * 1f, stompCollider, 0, player);
 
         if (stomp == true) {
             if (enemyType == enemyCat.Goompa) {

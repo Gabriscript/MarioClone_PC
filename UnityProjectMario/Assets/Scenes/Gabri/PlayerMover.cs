@@ -17,14 +17,14 @@ public class PlayerMover : MonoBehaviour {
     [Header("Move info")]
     public float speed = 10f;
     bool wallhangPressed = false;
-    bool jumpPressed = false;
+    public bool jumpPressed = false;
     bool momentumPressed = false;
     bool facingRight = true;
     bool grounded;
     bool canMove = true;
     bool onWall = false;
     bool hitbrick = false;
-    bool buttSlumpPressed = false;
+    public  bool buttSlumpPressed = false;
     bool crouchPressed = false;
     public float deathFromFallingY = -10;
     bool dead;
@@ -55,7 +55,7 @@ public class PlayerMover : MonoBehaviour {
     public LayerMask Wall;
     public LayerMask Brick;
     public Transform groundCheckPoint;
-    public Transform brickCheckPoint;
+   // public Transform brickCheckPoint;
     public static bool MarioIsSmall = false;
     public Transform wallGrabPoint;
     public float grabDistance = 1f;
@@ -238,7 +238,7 @@ public class PlayerMover : MonoBehaviour {
     public void CollisionCheck() {
         grounded = Physics2D.OverlapCircle(groundCheckPoint.position, .2f, Platform);
         onWall = Physics2D.OverlapCircle(wallGrabPoint.position, .2f, Wall);
-        hitbrick = Physics2D.OverlapCircle(brickCheckPoint.position, .2f, Brick);
+       // hitbrick = Physics2D.OverlapCircle(brickCheckPoint.position, .2f, Brick);
     }
     public void Move() {
 
