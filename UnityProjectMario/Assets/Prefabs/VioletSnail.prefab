@@ -87,13 +87,13 @@ MonoBehaviour:
     m_Bits: 64
   player:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   turnCollision:
     serializedVersion: 2
     m_Bits: 192
   timer: 0
   enemyAnimation: {fileID: 3364978473885648937}
-  shell: {fileID: 0}
+  shell: {fileID: 9140027565864105615, guid: 21543c22660b573478a8e474e8b1d495, type: 3}
 --- !u!50 &3364978473831016966
 Rigidbody2D:
   serializedVersion: 4
@@ -128,7 +128,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.57}
+  m_Offset: {x: 0, y: 0.5135268}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -139,7 +139,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.27, y: 1.19}
+  m_Size: {x: 1.27, y: 1.0770538}
   m_EdgeRadius: 0
 --- !u!1 &3364978473885648937
 GameObject:
