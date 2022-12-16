@@ -28,7 +28,7 @@ public class GridController : MonoBehaviour {
 
     void Start() {
         grid = gameObject.GetComponent<Grid>();
-        gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+        gm = GameObject.Find("Canvas").GetComponent<GameManager>();
     }
 
     void Update() {
@@ -48,7 +48,7 @@ public class GridController : MonoBehaviour {
         return grid.WorldToCell(mouseWorldPos);
     }
 
-    void BumpTile(Vector3Int coords) {
+    public void BumpTile(Vector3Int coords) {
         var tile = map.GetTile(coords);
         if (tile == breakable) {
             gm.score += 10;
